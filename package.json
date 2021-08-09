@@ -11,7 +11,7 @@
     "url": "git+https://github.com/bahrus/liquid-xtal.git"
   },
   "dependencies": {
-    "trans-render": "0.0.292",
+    "trans-render": "0.0.293",
     "xtal-element": "0.0.420"
   },
   "author": "anderson.bruce.b@gmail.com",

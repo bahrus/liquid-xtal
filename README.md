@@ -28,7 +28,7 @@ const counterSoWCConfig = {
     "tagName": "counter-so",
     "transforms": [
         {
-            "upon": ["domCache", "count"],
+            "upon": ["domCache", {"type": "Object"}, "count"],
             "match":{
                 "countPart": "${host.count}"
             }
@@ -36,18 +36,11 @@ const counterSoWCConfig = {
         {
             "upon": ["domCache"],
             "match: {
-                "buttonElements":  [{}, {"click": ["${host.changeCount}", "dataset.d", "${parseInt}"]}]
+                "buttonElements":  [{}, {"click": ["changeCount", "dataset.d", "parseInt"]}]
             }
         }
     ],
-    "props":{
-        "domCache":{
-            "type": "Object"
-        },
-        "count":{
-            "type": "Number"
-        }
-    }
+
 };
 
 
