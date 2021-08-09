@@ -24,7 +24,7 @@ const mainTemplate = html`
     }
 </style>
 `;
-const CounterSo = {
+const counterSoWCConfig = {
     "tagName": "counter-so",
     "transforms": [
         {
@@ -61,5 +61,5 @@ export class CounterSo{
 
 }
 
-define(CounterRe);
+define(CounterSo, mainTemplate, counterSoWCConfig);
 ```
