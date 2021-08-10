@@ -38,5 +38,6 @@ define({
     defaultPropVals: {
         mainTemplate: mainTemplate
     },
+    initMethod: 'init',
     mixins: [CounterSo],
 });

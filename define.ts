@@ -12,7 +12,10 @@ export function define<T = any>(args: DefineArgs<T>){
             if(args.defaultPropVals !== undefined){
                 Object.assign(this, args.defaultPropVals);
             }
-            (<any>this).init(this);
+            if(args.initMethod !== undefined){
+                (<any>this)[args.initMethod](this);
+            }
+            
         }
     }
     const mixins = args.mixins;

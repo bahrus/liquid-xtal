@@ -8,7 +8,9 @@ export function define(args) {
             if (args.defaultPropVals !== undefined) {
                 Object.assign(this, args.defaultPropVals);
             }
-            this.init(this);
+            if (args.initMethod !== undefined) {
+                this[args.initMethod](this);
+            }
         }
     }
     newClass.is = c.tagName;
