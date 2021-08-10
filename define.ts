@@ -1,7 +1,11 @@
 import { define as def } from 'xtal-element/lib/define.js';
 import { applyMixins } from 'xtal-element/lib/applyMixins.js';
-import { WCConfig } from './types.d.js';
+import { DefineArgs } from './types.d.js';
 
-export function define(ctor:  {new(): Object}, mainTemplate: HTMLTemplateElement,  config: WCConfig[]){
-    
+export function define(args: DefineArgs){
+    const c = args.configs;
+    class newClass extends  HTMLElement{
+        static is = c.find(x => x.tagName !== undefined)?.tagName;
+    }
+    def(newClass);
 }

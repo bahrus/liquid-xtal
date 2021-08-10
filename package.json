@@ -4,6 +4,7 @@
   "description": "TBD",
   "main": "index.js",
   "scripts": {
+    "serve": "node node_modules/xtal-test/serve.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -13,6 +14,9 @@
   "dependencies": {
     "trans-render": "0.0.293",
     "xtal-element": "0.0.420"
+  },
+  "devDependencies": {
+    "xtal-test": "0.0.51"
   },
   "author": "anderson.bruce.b@gmail.com",
   "license": "MIT",

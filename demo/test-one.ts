@@ -1,3 +1,7 @@
-export class TestOne {
-    
-}
+import {define} from '../define.js';
+
+define({
+    configs:  [{
+        tagName:'test-one',
+    }]
+});

@@ -5,5 +5,9 @@
       "strict": true,
       "watch": true,
       "sourceMap": false,
-    }
+    },
+    "files":[
+      "define.ts",
+      "demo/test-one.ts"
+    ]
   }
