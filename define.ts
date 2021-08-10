@@ -3,10 +3,17 @@ import { applyMixins } from 'xtal-element/lib/applyMixins.js';
 import { DefineArgs} from './types.d.js';
 export {html} from 'xtal-element/lib/html.js';
 
+
 export function define<T = any>(args: DefineArgs<T>){
     const c = args.config;
     class newClass extends  HTMLElement{
         static is = c.tagName;
+        connectedCallback(){
+            if(args.defaultPropVals !== undefined){
+                Object.assign(this, args.defaultPropVals);
+            }
+            (<any>this).init(this);
+        }
     }
     const mixins = args.mixins;
     if(mixins !== undefined){
@@ -14,3 +21,4 @@ export function define<T = any>(args: DefineArgs<T>){
     }
     xc.define(newClass);
 }
+

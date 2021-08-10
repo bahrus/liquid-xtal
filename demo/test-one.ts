@@ -1,4 +1,4 @@
-import {define, html} from '../define.js';
+import {define, html, BaseElement} from '../define.js';
 
 export class CounterSo{
 
@@ -6,7 +6,10 @@ export class CounterSo{
         this.count += delta;
     }
 
-
+    init(self: HTMLElement){
+        self.attachShadow({mode: 'open'});
+        self.shadowRoot!.appendChild(this.mainTemplate.content.cloneNode(true));
+    }
 }
 
 export interface CounterSo{

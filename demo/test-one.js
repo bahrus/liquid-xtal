@@ -3,6 +3,10 @@ export class CounterSo {
     changeCount(delta) {
         this.count += delta;
     }
+    init(self) {
+        self.attachShadow({ mode: 'open' });
+        self.shadowRoot.appendChild(this.mainTemplate.content.cloneNode(true));
+    }
 }
 const mainTemplate = html `
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
