@@ -15,9 +15,9 @@ export function define<T = any>(args: DefineArgs<T>){
             // }
             for(const key in props){
                 const prop = props[key];
-                const defaultVal = prop.defaultVal;
+                const defaultVal = prop.default;
                 if(defaultVal !== undefined){
-                    (<any>this)[key] = prop.defaultVal;
+                    (<any>this)[key] = prop.default;
                 }
                 
             }
@@ -94,7 +94,7 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
 function setDefVal(defaults: any, key: string, prop: PropInfo){
     const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
     if(nonSerializableDefault !== undefined){
-        prop.defaultVal = nonSerializableDefault;
+        prop.default = nonSerializableDefault;
     }
 }
 

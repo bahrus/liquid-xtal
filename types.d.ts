@@ -33,7 +33,7 @@ export type MatchRHS<TMixinComposite = any> = string;
 
 export interface PropInfo{
     type?: "String" | "Number" | "Boolean" | "Object";
-    defaultVal?: any;
+    default?: any;
 }
 
 export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;

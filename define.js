@@ -11,9 +11,9 @@ export function define(args) {
             // }
             for (const key in props) {
                 const prop = props[key];
-                const defaultVal = prop.defaultVal;
+                const defaultVal = prop.default;
                 if (defaultVal !== undefined) {
-                    this[key] = prop.defaultVal;
+                    this[key] = prop.default;
                 }
             }
             if (c.initMethod !== undefined) {
@@ -86,7 +86,7 @@ export function insertProps(hasUpons, props, args) {
 function setDefVal(defaults, key, prop) {
     const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
     if (nonSerializableDefault !== undefined) {
-        prop.defaultVal = nonSerializableDefault;
+        prop.default = nonSerializableDefault;
     }
 }
 export function addPropsToClass(newClass, props, args) {
