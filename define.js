@@ -94,6 +94,9 @@ export function addPropsToClass(newClass, props, args) {
                         }
                     });
                     for (const action of filteredActions) {
+                        const fn = this[action.do];
+                        if (fn === undefined)
+                            throw (action.do.toString() + " undefined");
                         this[action.do](this);
                     }
                 }

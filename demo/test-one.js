@@ -3,6 +3,8 @@ export class CounterSo {
     changeCount(delta) {
         this.count += delta;
     }
+}
+export class TemplateManager {
     init(self) {
         self.attachShadow({ mode: 'open' });
         self.shadowRoot.appendChild(this.mainTemplate.content.cloneNode(true));
@@ -44,5 +46,5 @@ define({
     defaultPropVals: {
         mainTemplate: mainTemplate
     },
-    mixins: [CounterSo],
+    mixins: [TemplateManager, CounterSo],
 });

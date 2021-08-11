@@ -5,17 +5,25 @@ export class CounterSo{
     changeCount(delta: number){
         this.count += delta;
     }
+}
 
+export interface CounterSo {
+    count: number;
+}
+
+export class TemplateManager{
     init(self: HTMLElement){
         self.attachShadow({mode: 'open'});
         self.shadowRoot!.appendChild(this.mainTemplate.content.cloneNode(true));
     }
 }
 
-export interface CounterSo{
-    count: number;
+export interface TemplateManager{
     mainTemplate: HTMLTemplateElement;
 }
+
+export interface CounterSo extends TemplateManager{}
+
 
 const mainTemplate = html`
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
@@ -54,6 +62,6 @@ define<CounterSo>({
     defaultPropVals:{
         mainTemplate: mainTemplate
     },
-    mixins: [CounterSo],
+    mixins: [TemplateManager, CounterSo],
 
 });

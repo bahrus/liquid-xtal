@@ -99,6 +99,8 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                         }
                     });
                     for(const action of filteredActions){
+                        const fn = this[action.do];
+                        if(fn === undefined) throw (action.do.toString() + " undefined");
                         this[action.do](this);
                     }
                 }
