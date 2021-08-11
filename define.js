@@ -19,6 +19,7 @@ export function define(args) {
     if (mixins !== undefined) {
         applyMixins(newClass, mixins);
     }
+    addPropsToClass(newClass, props, args);
     def(newClass);
     return newClass;
 }

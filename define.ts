@@ -23,7 +23,7 @@ export function define<T = any>(args: DefineArgs<T>){
     if(mixins !== undefined){
         applyMixins(newClass, mixins);
     }
-    
+    addPropsToClass(newClass, props, args);
     def(newClass);
     return newClass;
 }

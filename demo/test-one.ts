@@ -44,12 +44,6 @@ const mainTemplate = html`
 define<CounterSo>({
     config:  {
         tagName:'test-one',
-        //initMethod: 'init',
-        // transforms: [
-        //     {
-        //         upon:
-        //     }
-        // ]
         actions: [
             {
                 upon: 'mainTemplate',
