@@ -116,7 +116,8 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                     const filteredActions = actions.filter(x => {
                         const req = x.required;
                         if(req !== undefined){
-                            for(const reqProp of req){
+                            const propKeys = req === 'all' ? Object.keys(props) : req;
+                            for(const reqProp of propKeys){
                                 if(!this[reqProp]) return false;
                             }
                         }
