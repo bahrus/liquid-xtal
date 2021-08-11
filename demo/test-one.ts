@@ -58,6 +58,22 @@ define<CounterSo>({
                 }],
                 required: ['clonedTemplate', 'initTransform'],
                 do: 'initClonedTempl'
+            },
+            {
+                upon: [
+                    'count', {
+                        type: 'Number',
+                        defaultVal: 30
+                    }, 
+                    'updateTransform', {
+                        type: 'Object',
+                        defaultVal: {
+                            "countPart": ["count"]
+                        }
+                    }
+                ],
+                required: ['count', 'updateTransform'],
+                do: 'doUpdateTransform',
             }
         ],
     },
