@@ -101,6 +101,8 @@ export function addPropsToClass(newClass, props, args) {
                 return this[privateKey];
             },
             set(nv) {
+                if (prop.dry && this[privateKey] === nv)
+                    return;
                 this[privateKey] = nv;
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {

@@ -19,6 +19,7 @@ export interface WCConfig<TMixinComposite = any>{
 export interface HasUpon<TMixinComposite = any>{
     upon: keyof TMixinComposite | StringOrPropInfo[];
     required?: (keyof TMixinComposite & string)[];
+    dry?: boolean,
 }
 
 export interface Transform<TMixinComposite = any> extends HasUpon<TMixinComposite>{
@@ -34,6 +35,7 @@ export type MatchRHS<TMixinComposite = any> = string;
 export interface PropInfo{
     type?: "String" | "Number" | "Boolean" | "Object";
     default?: any;
+    dry?: boolean;
 }
 
 export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;

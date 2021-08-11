@@ -110,6 +110,7 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                 return this[privateKey];
             },
             set(nv){
+                if(prop.dry && this[privateKey] === nv) return;
                 this[privateKey] = nv;
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
@@ -140,6 +141,7 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
         });
     }
 }
+
 
 
 
