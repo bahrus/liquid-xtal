@@ -33,23 +33,41 @@ export function defProps<T extends HTMLElement = HTMLElement>(elementClass: {new
     insertProps(args.config.actions, props);
 }
 
+const defaultProp: PropInfo = {
+    type: 'Object'
+};
+
 export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}){
     if(hasUpons === undefined) return;
+    
     for(const hasUpon of hasUpons){
         
         const upon = hasUpon.upon;
         switch(typeof upon){
             case 'string':
                 if(props[upon] === undefined){
-                    props[upon] = {
-                        type: 'Object'
-                    };
+                    props[upon] = {...defaultProp};
                 }
                 break;
             case 'object':
                 if(Array.isArray(upon)){
                     let lastProp: PropInfo | undefined;
-                    
+                    for(const dependency of upon){
+                        switch(typeof dependency){
+                            case 'string':
+                                if(props[dependency] === undefined){
+                                    props[dependency] = {...defaultProp};
+                                }
+                                lastProp = props[dependency];
+                                break;
+                            case 'object':
+                                if(lastProp !== undefined){
+                                    Object.assign(lastProp, dependency);
+                                }else{
+                                    throw 'Syntax Error';
+                                }
+                        }
+                    }
                 }else{
                     throw 'NI';//Not Implemented
                 }

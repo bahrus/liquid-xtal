@@ -27,6 +27,9 @@ export function defProps(elementClass, args) {
     const props = {};
     insertProps(args.config.actions, props);
 }
+const defaultProp = {
+    type: 'Object'
+};
 export function insertProps(hasUpons, props) {
     if (hasUpons === undefined)
         return;
@@ -35,14 +38,29 @@ export function insertProps(hasUpons, props) {
         switch (typeof upon) {
             case 'string':
                 if (props[upon] === undefined) {
-                    props[upon] = {
-                        type: 'Object'
-                    };
+                    props[upon] = { ...defaultProp };
                 }
                 break;
             case 'object':
                 if (Array.isArray(upon)) {
                     let lastProp;
+                    for (const dependency of upon) {
+                        switch (typeof dependency) {
+                            case 'string':
+                                if (props[dependency] === undefined) {
+                                    props[dependency] = { ...defaultProp };
+                                }
+                                lastProp = props[dependency];
+                                break;
+                            case 'object':
+                                if (lastProp !== undefined) {
+                                    Object.assign(lastProp, dependency);
+                                }
+                                else {
+                                    throw 'Syntax Error';
+                                }
+                        }
+                    }
                 }
                 else {
                     throw 'NI'; //Not Implemented
