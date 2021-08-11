@@ -4,10 +4,13 @@ export class CounterSo {
         this.count += delta;
     }
 }
-export class TemplateManager {
+export class TemplateManager extends HTMLElement {
     init(self) {
         self.attachShadow({ mode: 'open' });
-        self.shadowRoot.appendChild(this.mainTemplate.content.cloneNode(true));
+        self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
+    }
+    initTransform(self) {
+        self.shadowRoot.appendChild(self.clonedTemplate);
     }
 }
 const mainTemplate = html `
@@ -40,6 +43,10 @@ define({
             {
                 upon: 'mainTemplate',
                 do: 'init'
+            },
+            {
+                upon: 'clonedTemplate',
+                do: 'initTransform'
             }
         ],
     },

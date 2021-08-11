@@ -11,15 +11,21 @@ export interface CounterSo {
     count: number;
 }
 
-export class TemplateManager{
-    init(self: HTMLElement){
+export class TemplateManager extends HTMLElement{
+    init(self: TemplateManager){
         self.attachShadow({mode: 'open'});
-        self.shadowRoot!.appendChild(this.mainTemplate.content.cloneNode(true));
+        self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
+        
+    }
+
+    initTransform(self: TemplateManager){
+        self.shadowRoot!.appendChild(self.clonedTemplate);
     }
 }
 
 export interface TemplateManager{
     mainTemplate: HTMLTemplateElement;
+    clonedTemplate: Node;
 }
 
 export interface CounterSo extends TemplateManager{}
@@ -56,6 +62,10 @@ define<CounterSo>({
             {
                 upon: 'mainTemplate',
                 do: 'init'
+            },
+            {
+                upon: 'clonedTemplate',
+                do: 'initTransform'
             }
         ],
     },
