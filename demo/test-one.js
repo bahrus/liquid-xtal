@@ -1,17 +1,8 @@
 import { define, html } from '../define.js';
+import { TemplateManager } from '../TemplateManager.js';
 export class CounterSo {
     changeCount(delta) {
         this.count += delta;
-    }
-}
-export class TemplateManager extends HTMLElement {
-    init(self) {
-        self.attachShadow({ mode: 'open' });
-        self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
-    }
-    initClonedTempl(self) {
-        self.shadowRoot.appendChild(self.clonedTemplate);
-        console.log(self.initTransform);
     }
 }
 const mainTemplate = html `

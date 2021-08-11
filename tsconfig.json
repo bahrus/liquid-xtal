@@ -8,6 +8,7 @@
     },
     "files":[
       "define.ts",
+      "TemplateManager.ts",
       "demo/test-one.ts"
     ]
   }

@@ -1,4 +1,5 @@
 import {define, html} from '../define.js';
+import {TemplateManager} from '../TemplateManager.js';
 
 export class CounterSo{
 
@@ -11,24 +12,7 @@ export interface CounterSo {
     count: number;
 }
 
-export class TemplateManager extends HTMLElement{
-    init(self: TemplateManager){
-        self.attachShadow({mode: 'open'});
-        self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
-        
-    }
 
-    initClonedTempl(self: TemplateManager){
-        self.shadowRoot!.appendChild(self.clonedTemplate);
-        console.log(self.initTransform);
-    }
-}
-
-export interface TemplateManager{
-    mainTemplate: HTMLTemplateElement;
-    clonedTemplate: Node;
-    initTransform: any;
-}
 
 export interface CounterSo extends TemplateManager{}
 
