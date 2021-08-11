@@ -107,14 +107,29 @@ export function addPropsToClass(newClass, props, args) {
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
                         const req = x.required;
+                        const upon = x.upon;
                         if (req !== undefined) {
-                            const propKeys = req === 'all' ? Object.keys(props) : req;
+                            let propKeys;
+                            if (req === 'all') {
+                                switch (typeof upon) {
+                                    case 'string':
+                                        propKeys = [upon];
+                                        break;
+                                    case 'object':
+                                        propKeys = upon.filter(x => typeof x === 'string');
+                                        break;
+                                    default:
+                                        throw 'NI';
+                                }
+                            }
+                            else {
+                                propKeys = req;
+                            }
                             for (const reqProp of propKeys) {
                                 if (!this[reqProp])
                                     return false;
                             }
                         }
-                        const upon = x.upon;
                         switch (typeof upon) {
                             case 'string':
                                 return upon === key;

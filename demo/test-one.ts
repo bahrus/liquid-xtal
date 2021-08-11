@@ -56,7 +56,7 @@ define<CounterSo>({
                         buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
                     }
                 }],
-                required: ['clonedTemplate', 'initTransform'],
+                required: 'all',
                 do: 'initClonedTempl'
             },
             {
