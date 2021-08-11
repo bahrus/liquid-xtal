@@ -18,6 +18,7 @@ export interface WCConfig<TMixinComposite = any>{
 
 export interface HasUpon<TMixinComposite = any>{
     upon: keyof TMixinComposite | StringOrPropInfo[];
+    required?: (keyof TMixinComposite & string)[];
 }
 
 export interface Transform<TMixinComposite = any> extends HasUpon<TMixinComposite>{

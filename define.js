@@ -92,7 +92,7 @@ function setDefVal(defaults, key, prop) {
 export function addPropsToClass(newClass, props, args) {
     const proto = newClass.prototype;
     const actions = args.config.actions;
-    const transforms = args.config.transforms;
+    //const transforms = args.config.transforms;
     for (const key in props) {
         const prop = props[key];
         const privateKey = '_' + key;
@@ -104,6 +104,13 @@ export function addPropsToClass(newClass, props, args) {
                 this[privateKey] = nv;
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
+                        const req = x.required;
+                        if (req !== undefined) {
+                            for (const reqProp of req) {
+                                if (!this[reqProp])
+                                    return false;
+                            }
+                        }
                         const upon = x.upon;
                         switch (typeof upon) {
                             case 'string':

@@ -101,7 +101,7 @@ function setDefVal(defaults: any, key: string, prop: PropInfo}){
 export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): T}, props: {[key: string]: PropInfo}, args: DefineArgs){
     const proto = newClass.prototype;
     const actions = args.config.actions;
-    const transforms = args.config.transforms;
+    //const transforms = args.config.transforms;
     for(const key in props){
         const prop = props[key];
         const privateKey = '_' + key;
@@ -113,6 +113,12 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                 this[privateKey] = nv;
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
+                        const req = x.required;
+                        if(req !== undefined){
+                            for(const reqProp of req){
+                                if(!this[reqProp]) return false;
+                            }
+                        }
                         const upon = x.upon;
                         switch(typeof upon){
                             case 'string':
@@ -120,6 +126,7 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                             case 'object':
                                 return upon.includes(key);
                         }
+
                     });
                     for(const action of filteredActions){
                         const fn = this[action.do];

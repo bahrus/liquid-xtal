@@ -52,6 +52,7 @@ define({
                             buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]
                         }
                     }],
+                required: ['clonedTemplate', 'initTransform'],
                 do: 'initClonedTempl'
             }
         ],
