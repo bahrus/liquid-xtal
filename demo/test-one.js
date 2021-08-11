@@ -59,7 +59,7 @@ define({
                         }
                     }
                 ],
-                required: ['count', 'updateTransform'],
+                required: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],

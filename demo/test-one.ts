@@ -72,7 +72,7 @@ define<CounterSo>({
                         }
                     }
                 ],
-                required: ['count', 'updateTransform'],
+                required: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],
