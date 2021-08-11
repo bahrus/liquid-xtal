@@ -1,4 +1,4 @@
-import {define, html, BaseElement} from '../define.js';
+import {define, html} from '../define.js';
 
 export class CounterSo{
 
@@ -44,10 +44,10 @@ const mainTemplate = html`
 define<CounterSo>({
     config:  {
         tagName:'test-one',
+        initMethod: 'init',
     },
     defaultPropVals:{
         mainTemplate: mainTemplate
     },
-    initMethod: 'init',
     mixins: [CounterSo],
 });

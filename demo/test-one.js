@@ -34,10 +34,10 @@ const mainTemplate = html `
 define({
     config: {
         tagName: 'test-one',
+        initMethod: 'init',
     },
     defaultPropVals: {
         mainTemplate: mainTemplate
     },
-    initMethod: 'init',
     mixins: [CounterSo],
 });

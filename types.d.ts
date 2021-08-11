@@ -5,10 +5,20 @@ export interface DefineArgs<TMixinComposite = any>{
     defaultPropVals?: {
         [P in keyof TMixinComposite]?: any;
     }
-    config: WCConfig;
-    initMethod?: keyof TMixinComposite;
+    config: WCConfig<TMixinComposite>;
+    
 }
 
-export interface WCConfig{
+export interface WCConfig<TMixinComposite = any>{
     tagName: string;
+    initMethod?: keyof TMixinComposite;
+    transforms?: Transform[];
 }
+
+export interface Transform<TMixinComposite = any>{
+    upon: string;
+    match: {[key: string]: MatchRHS<TMixinComposite>}
+}
+
+type MatchRHS<TMixinComposite = any> = string;
+

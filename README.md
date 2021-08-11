@@ -35,7 +35,7 @@ const counterSoWCConfig = {
         },
         {
             "upon": ["domCache"],
-            "match: {
+            "match": {
                 "buttonElements":  [{}, {"click": ["changeCount", "dataset.d", "parseInt"]}]
             }
         }
