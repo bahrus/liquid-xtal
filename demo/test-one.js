@@ -34,7 +34,18 @@ const mainTemplate = html `
 define({
     config: {
         tagName: 'test-one',
-        initMethod: 'init',
+        //initMethod: 'init',
+        // transforms: [
+        //     {
+        //         upon:
+        //     }
+        // ]
+        actions: [
+            {
+                upon: 'mainTemplate',
+                do: 'init'
+            }
+        ],
     },
     defaultPropVals: {
         mainTemplate: mainTemplate

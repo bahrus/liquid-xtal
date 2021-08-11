@@ -12,13 +12,26 @@ export interface DefineArgs<TMixinComposite = any>{
 export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
-    transforms?: Transform[];
+    transforms?: Transform<TMixinComposite>[];
+    actions?: Action<TMixinComposite>[];
 }
 
 export interface Transform<TMixinComposite = any>{
-    upon: string;
+    upon: string | StringOrPropInfo[];
     match: {[key: string]: MatchRHS<TMixinComposite>}
 }
 
-type MatchRHS<TMixinComposite = any> = string;
+export interface Action<TMixinComposite = any>{
+    upon: keyof TMixinComposite | StringOrPropInfo[];
+    do: keyof TMixinComposite;
+}
+
+export type MatchRHS<TMixinComposite = any> = string;
+
+export interface PropInfo{
+    type?: "String" | "Number" | "Boolean" | "Object";
+
+}
+
+export type StringOrPropInfo = string | PropInfo;
 
