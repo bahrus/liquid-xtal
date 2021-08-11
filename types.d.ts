@@ -12,7 +12,7 @@ export interface DefineArgs<TMixinComposite = any>{
 export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
-    transforms?: Transform<TMixinComposite>[];
+    //transforms?: Transform<TMixinComposite>[];
     actions?: Action<TMixinComposite>[];
 }
 
@@ -32,7 +32,7 @@ export type MatchRHS<TMixinComposite = any> = string;
 
 export interface PropInfo{
     type?: "String" | "Number" | "Boolean" | "Object";
-
+    defaultVal?: any;
 }
 
 export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;

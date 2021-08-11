@@ -6,8 +6,15 @@ export function define(args) {
     const props = accProps(args);
     class newClass extends HTMLElement {
         connectedCallback() {
-            if (args.defaultPropVals !== undefined) {
-                Object.assign(this, args.defaultPropVals);
+            // if(args.defaultPropVals !== undefined){
+            //     Object.assign(this, args.defaultPropVals);
+            // }
+            for (const key in props) {
+                const prop = props[key];
+                const defaultVal = prop.defaultVal;
+                if (defaultVal !== undefined) {
+                    this[key] = prop.defaultVal;
+                }
             }
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);
@@ -25,22 +32,27 @@ export function define(args) {
 }
 export function accProps(args) {
     const props = {};
-    insertProps(args.config.actions, props);
-    insertProps(args.config.transforms, props);
+    insertProps(args.config.actions, props, args);
+    //insertProps(args.config.transforms, props);
     return props;
 }
 const defaultProp = {
     type: 'Object'
 };
-export function insertProps(hasUpons, props) {
+export function insertProps(hasUpons, props, args) {
     if (hasUpons === undefined)
         return;
+    const nonSerializableDefaults = args.defaultPropVals;
     for (const hasUpon of hasUpons) {
         const upon = hasUpon.upon;
         switch (typeof upon) {
             case 'string':
                 if (props[upon] === undefined) {
                     props[upon] = { ...defaultProp };
+                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[upon] : undefined;
+                    if (nonSerializableDefault !== undefined) {
+                        props[upon].defaultVal = nonSerializableDefault;
+                    }
                 }
                 break;
             case 'object':
@@ -51,6 +63,10 @@ export function insertProps(hasUpons, props) {
                             case 'string':
                                 if (props[dependency] === undefined) {
                                     props[dependency] = { ...defaultProp };
+                                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[dependency] : undefined;
+                                    if (nonSerializableDefault !== undefined) {
+                                        props[dependency].defaultVal = nonSerializableDefault;
+                                    }
                                 }
                                 lastProp = props[dependency];
                                 break;
@@ -61,6 +77,7 @@ export function insertProps(hasUpons, props) {
                                 else {
                                     throw 'Syntax Error';
                                 }
+                                break;
                         }
                     }
                 }

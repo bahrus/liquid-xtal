@@ -18,14 +18,16 @@ export class TemplateManager extends HTMLElement{
         
     }
 
-    initTransform(self: TemplateManager){
+    initClonedTempl(self: TemplateManager){
         self.shadowRoot!.appendChild(self.clonedTemplate);
+        console.log(self.initTransform);
     }
 }
 
 export interface TemplateManager{
     mainTemplate: HTMLTemplateElement;
     clonedTemplate: Node;
+    initTransform: any;
 }
 
 export interface CounterSo extends TemplateManager{}
@@ -64,8 +66,13 @@ define<CounterSo>({
                 do: 'init'
             },
             {
-                upon: 'clonedTemplate',
-                do: 'initTransform'
+                upon: ['clonedTemplate', 'initTransform', {
+                    type: 'Object',
+                    defaultVal: {
+                        buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+                    }
+                }],
+                do: 'initClonedTempl'
             }
         ],
     },

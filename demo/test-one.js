@@ -9,8 +9,9 @@ export class TemplateManager extends HTMLElement {
         self.attachShadow({ mode: 'open' });
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
-    initTransform(self) {
+    initClonedTempl(self) {
         self.shadowRoot.appendChild(self.clonedTemplate);
+        console.log(self.initTransform);
     }
 }
 const mainTemplate = html `
@@ -45,8 +46,13 @@ define({
                 do: 'init'
             },
             {
-                upon: 'clonedTemplate',
-                do: 'initTransform'
+                upon: ['clonedTemplate', 'initTransform', {
+                        type: 'Object',
+                        defaultVal: {
+                            buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]
+                        }
+                    }],
+                do: 'initClonedTempl'
             }
         ],
     },
