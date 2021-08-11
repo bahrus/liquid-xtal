@@ -68,7 +68,7 @@ define<CounterSo>({
                     'updateTransform', {
                         type: 'Object',
                         defaultVal: {
-                            "countPart": ["count"]
+                            "countParts": ["count"]
                         }
                     }
                 ],
