@@ -6,6 +6,7 @@ export {html} from 'xtal-element/lib/html.js';
 
 export function define<T = any>(args: DefineArgs<T>){
     const c = args.config;
+    const props  = accProps(args);
     class newClass extends  HTMLElement{
         static is = c.tagName;
         connectedCallback(){
@@ -22,15 +23,16 @@ export function define<T = any>(args: DefineArgs<T>){
     if(mixins !== undefined){
         applyMixins(newClass, mixins);
     }
-    defProps(newClass, args);
+    
     def(newClass);
     return newClass;
 }
 
-export function defProps<T extends HTMLElement = HTMLElement>(elementClass: {new(): T}, args: DefineArgs<T>){
-    const proto = elementClass.prototype;
+export function accProps<T = any>(args: DefineArgs<T>){
     const props: {[key: string]: PropInfo} = {};
     insertProps(args.config.actions, props);
+    insertProps(args.config.transforms, props);
+    return props;
 }
 
 const defaultProp: PropInfo = {
@@ -39,9 +41,7 @@ const defaultProp: PropInfo = {
 
 export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}){
     if(hasUpons === undefined) return;
-    
     for(const hasUpon of hasUpons){
-        
         const upon = hasUpon.upon;
         switch(typeof upon){
             case 'string':
@@ -72,6 +72,40 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                     throw 'NI';//Not Implemented
                 }
         }
+    }
+}
+
+export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): T}, props: {[key: string]: PropInfo}, args: DefineArgs){
+    const proto = newClass.prototype;
+    const actions = args.config.actions;
+    const transforms = args.config.transforms;
+    for(const key in props){
+        const prop = props[key];
+        const privateKey = '_' + key;
+        Object.defineProperty(proto, key, {
+            get(){
+                return this[privateKey];
+            },
+            set(nv){
+                this[privateKey] = nv;
+                if(actions !== undefined){
+                    const filteredActions = actions.filter(x => {
+                        const upon = x.upon;
+                        switch(typeof upon){
+                            case 'string':
+                                return upon === key;
+                            case 'object':
+                                return upon.includes(key);
+                        }
+                    });
+                    for(const action of filteredActions){
+                        this[action.do](this);
+                    }
+                }
+            },
+            enumerable: true,
+            configurable: true,
+        });
     }
 }
 

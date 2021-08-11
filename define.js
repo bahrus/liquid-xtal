@@ -3,6 +3,7 @@ import { applyMixins } from 'xtal-element/lib/applyMixins.js';
 export { html } from 'xtal-element/lib/html.js';
 export function define(args) {
     const c = args.config;
+    const props = accProps(args);
     class newClass extends HTMLElement {
         connectedCallback() {
             if (args.defaultPropVals !== undefined) {
@@ -18,14 +19,14 @@ export function define(args) {
     if (mixins !== undefined) {
         applyMixins(newClass, mixins);
     }
-    defProps(newClass, args);
     def(newClass);
     return newClass;
 }
-export function defProps(elementClass, args) {
-    const proto = elementClass.prototype;
+export function accProps(args) {
     const props = {};
     insertProps(args.config.actions, props);
+    insertProps(args.config.transforms, props);
+    return props;
 }
 const defaultProp = {
     type: 'Object'
@@ -66,5 +67,38 @@ export function insertProps(hasUpons, props) {
                     throw 'NI'; //Not Implemented
                 }
         }
+    }
+}
+export function addPropsToClass(newClass, props, args) {
+    const proto = newClass.prototype;
+    const actions = args.config.actions;
+    const transforms = args.config.transforms;
+    for (const key in props) {
+        const prop = props[key];
+        const privateKey = '_' + key;
+        Object.defineProperty(proto, key, {
+            get() {
+                return this[privateKey];
+            },
+            set(nv) {
+                this[privateKey] = nv;
+                if (actions !== undefined) {
+                    const filteredActions = actions.filter(x => {
+                        const upon = x.upon;
+                        switch (typeof upon) {
+                            case 'string':
+                                return upon === key;
+                            case 'object':
+                                return upon.includes(key);
+                        }
+                    });
+                    for (const action of filteredActions) {
+                        this[action.do](this);
+                    }
+                }
+            },
+            enumerable: true,
+            configurable: true,
+        });
     }
 }
