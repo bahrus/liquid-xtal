@@ -56,11 +56,9 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
         switch(typeof upon){
             case 'string':
                 if(props[upon] === undefined){
-                    props[upon] = {...defaultProp};
-                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[upon] : undefined;
-                    if(nonSerializableDefault !== undefined){
-                        props[upon].defaultVal = nonSerializableDefault;
-                    }
+                    const prop: PropInfo = {...defaultProp};
+                    props[upon] = prop;
+                    setDefVal(nonSerializableDefaults, upon, prop);
                 }
                 break;
             case 'object':
@@ -70,11 +68,9 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                         switch(typeof dependency){
                             case 'string':
                                 if(props[dependency] === undefined){
-                                    props[dependency] = {...defaultProp};
-                                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[dependency] : undefined;
-                                    if(nonSerializableDefault !== undefined){
-                                        props[dependency].defaultVal = nonSerializableDefault;
-                                    }
+                                    const prop: PropInfo = {...defaultProp};
+                                    props[dependency] = prop;
+                                    setDefVal(nonSerializableDefaults, dependency, prop);
                                 }
                                 lastProp = props[dependency];
                                 break;
@@ -92,6 +88,13 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                     throw 'NI';//Not Implemented
                 }
         }
+    }
+}
+
+function setDefVal(defaults: any, key: string, prop: PropInfo}){
+    const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
+    if(nonSerializableDefault !== undefined){
+        prop.defaultVal = nonSerializableDefault;
     }
 }
 

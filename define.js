@@ -48,11 +48,9 @@ export function insertProps(hasUpons, props, args) {
         switch (typeof upon) {
             case 'string':
                 if (props[upon] === undefined) {
-                    props[upon] = { ...defaultProp };
-                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[upon] : undefined;
-                    if (nonSerializableDefault !== undefined) {
-                        props[upon].defaultVal = nonSerializableDefault;
-                    }
+                    const prop = { ...defaultProp };
+                    props[upon] = prop;
+                    setDefVal(nonSerializableDefaults, upon, prop);
                 }
                 break;
             case 'object':
@@ -62,11 +60,9 @@ export function insertProps(hasUpons, props, args) {
                         switch (typeof dependency) {
                             case 'string':
                                 if (props[dependency] === undefined) {
-                                    props[dependency] = { ...defaultProp };
-                                    const nonSerializableDefault = nonSerializableDefaults !== undefined ? nonSerializableDefaults[dependency] : undefined;
-                                    if (nonSerializableDefault !== undefined) {
-                                        props[dependency].defaultVal = nonSerializableDefault;
-                                    }
+                                    const prop = { ...defaultProp };
+                                    props[dependency] = prop;
+                                    setDefVal(nonSerializableDefaults, dependency, prop);
                                 }
                                 lastProp = props[dependency];
                                 break;
@@ -85,6 +81,12 @@ export function insertProps(hasUpons, props, args) {
                     throw 'NI'; //Not Implemented
                 }
         }
+    }
+}
+function setDefVal(defaults, key, prop) {
+    const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
+    if (nonSerializableDefault !== undefined) {
+        prop.defaultVal = nonSerializableDefault;
     }
 }
 export function addPropsToClass(newClass, props, args) {
