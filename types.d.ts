@@ -16,13 +16,15 @@ export interface WCConfig<TMixinComposite = any>{
     actions?: Action<TMixinComposite>[];
 }
 
-export interface Transform<TMixinComposite = any>{
-    upon: string | StringOrPropInfo[];
+export interface HasUpon<TMixinComposite = any>{
+    upon: keyof TMixinComposite | StringOrPropInfo[];
+}
+
+export interface Transform<TMixinComposite = any> extends HasUpon<TMixinComposite>{
     match: {[key: string]: MatchRHS<TMixinComposite>}
 }
 
-export interface Action<TMixinComposite = any>{
-    upon: keyof TMixinComposite | StringOrPropInfo[];
+export interface Action<TMixinComposite = any> extends HasUpon<TMixinComposite>{
     do: keyof TMixinComposite;
 }
 
@@ -33,5 +35,5 @@ export interface PropInfo{
 
 }
 
-export type StringOrPropInfo = string | PropInfo;
+export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;
 

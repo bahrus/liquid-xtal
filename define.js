@@ -24,4 +24,29 @@ export function define(args) {
 }
 export function defProps(elementClass, args) {
     const proto = elementClass.prototype;
+    const props = {};
+    insertProps(args.config.actions, props);
+}
+export function insertProps(hasUpons, props) {
+    if (hasUpons === undefined)
+        return;
+    for (const hasUpon of hasUpons) {
+        const upon = hasUpon.upon;
+        switch (typeof upon) {
+            case 'string':
+                if (props[upon] === undefined) {
+                    props[upon] = {
+                        type: 'Object'
+                    };
+                }
+                break;
+            case 'object':
+                if (Array.isArray(upon)) {
+                    let lastProp;
+                }
+                else {
+                    throw 'NI'; //Not Implemented
+                }
+        }
+    }
 }
