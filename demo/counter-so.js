@@ -35,16 +35,10 @@ define({
             count: 30
         },
         actions: [
-            TemplMgmt.initConfig,
-            {
-                upon: ['clonedTemplate', 'initTransform'],
-                biff: ['clonedTemplate', 'initTransform'],
-                do: 'doInitTransform'
-            },
+            ...TemplMgmt.initConfig,
             {
                 upon: ['count', 'updateTransform'],
-                biff: ['updateTransform'],
-                do: 'doUpdateTransform',
+                ...TemplMgmt.updateConfig
             }
         ],
     },

@@ -43,16 +43,10 @@ define<CounterSo>({
             count: 30
         },
         actions: [
-            TemplMgmt.initConfig,
-            {
-                upon: ['clonedTemplate', 'initTransform'],
-                biff: ['clonedTemplate', 'initTransform'],
-                do: 'doInitTransform'
-            },
+            ...TemplMgmt.initConfig,
             {
                 upon: ['count', 'updateTransform'],
-                biff: ['updateTransform'],
-                do: 'doUpdateTransform',
+                ...TemplMgmt.updateConfig
             }
         ],
     },
@@ -62,5 +56,4 @@ define<CounterSo>({
     mixins: [TemplMgmt, {
         changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
     }],
-
 });

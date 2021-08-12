@@ -46,9 +46,22 @@ export class TemplMgmt extends HTMLElement{
         transform(self.shadowRoot!, this.__ctx!);
     }
 
-    static initConfig : Action<TemplMgmt> = {
-        upon: 'mainTemplate',
-        do: 'templInit'
+    static initConfig : Action<TemplMgmt>[] = [
+        {
+            upon: 'mainTemplate',
+            do: 'templInit'
+        },
+        {
+            upon: ['clonedTemplate', 'initTransform'],
+            biff: ['clonedTemplate', 'initTransform'],
+            do: 'doInitTransform'
+        }
+    ];
+
+    static updateConfig: Action<TemplMgmt> = {
+        
+        biff: ['updateTransform'],
+        do: 'doUpdateTransform',
     };
 }
 

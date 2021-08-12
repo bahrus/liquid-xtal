@@ -36,7 +36,18 @@ export class TemplMgmt extends HTMLElement {
         transform(self.shadowRoot, this.__ctx);
     }
 }
-TemplMgmt.initConfig = {
-    upon: 'mainTemplate',
-    do: 'templInit'
+TemplMgmt.initConfig = [
+    {
+        upon: 'mainTemplate',
+        do: 'templInit'
+    },
+    {
+        upon: ['clonedTemplate', 'initTransform'],
+        biff: ['clonedTemplate', 'initTransform'],
+        do: 'doInitTransform'
+    }
+];
+TemplMgmt.updateConfig = {
+    biff: ['updateTransform'],
+    do: 'doUpdateTransform',
 };
