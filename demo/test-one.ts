@@ -47,7 +47,7 @@ define<CounterSo>({
         actions: [
             {
                 upon: 'mainTemplate',
-                do: 'init'
+                do: 'templInit'
             },
             {
                 upon: ['clonedTemplate', 
@@ -59,7 +59,7 @@ define<CounterSo>({
                     }
                 ],
                 required: 'all',
-                do: 'initClonedTempl'
+                do: 'doInitTransform'
             },
             {
                 upon: [

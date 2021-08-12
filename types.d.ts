@@ -14,11 +14,13 @@ export interface WCConfig<TMixinComposite = any>{
     initMethod?: keyof TMixinComposite;
     //transforms?: Transform<TMixinComposite>[];
     actions?: Action<TMixinComposite>[];
+    blockingProps?: keyof TMixinComposite | StringOrPropInfo[]; //TODO
 }
 
 export interface HasUpon<TMixinComposite = any>{
     upon: keyof TMixinComposite | StringOrPropInfo[];
     required?: 'all' | (keyof TMixinComposite & string)[];
+    //blocking?: (keyof TMixinComposite & string)[];
     dry?: boolean,
 }
 
@@ -36,6 +38,7 @@ export interface PropInfo{
     type?: "String" | "Number" | "Boolean" | "Object";
     default?: any;
     dry?: boolean;
+    parse?: boolean;
 }
 
 export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;

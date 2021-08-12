@@ -34,7 +34,7 @@ define({
         actions: [
             {
                 upon: 'mainTemplate',
-                do: 'init'
+                do: 'templInit'
             },
             {
                 upon: ['clonedTemplate',
@@ -46,7 +46,7 @@ define({
                     }
                 ],
                 required: 'all',
-                do: 'initClonedTempl'
+                do: 'doInitTransform'
             },
             {
                 upon: [

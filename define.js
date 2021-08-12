@@ -1,14 +1,44 @@
 import { define as def } from 'xtal-element/lib/define.js';
 import { applyMixins } from 'xtal-element/lib/applyMixins.js';
+import { propUp } from 'xtal-element/lib/propUp.js';
+import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
+import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
 export { html } from 'xtal-element/lib/html.js';
+export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 export function define(args) {
     const c = args.config;
     const props = accProps(args);
     class newClass extends HTMLElement {
+        attributeChangedCallback(n, ov, nv) {
+            const propName = lispToCamel(n);
+            const prop = props[propName];
+            if (prop !== undefined) {
+                if (prop.dry && ov === nv)
+                    return;
+                const aThis = this;
+                switch (prop.type) {
+                    case 'String':
+                        aThis[propName] = nv;
+                        break;
+                    case 'Object':
+                        if (prop.parse) {
+                            aThis[propName] = JSON.parse(nv);
+                        }
+                        break;
+                    case 'Number':
+                        aThis[propName] = Number(nv);
+                        break;
+                    case 'Boolean':
+                        aThis[propName] = nv !== null;
+                        break;
+                }
+            }
+        }
         connectedCallback() {
             // if(args.defaultPropVals !== undefined){
             //     Object.assign(this, args.defaultPropVals);
             // }
+            propUp(this, Object.keys(props));
             for (const key in props) {
                 const prop = props[key];
                 const defaultVal = prop.default;
@@ -20,8 +50,15 @@ export function define(args) {
                 this[c.initMethod](this);
             }
         }
+        blockReactions() {
+            //[TODO]
+        }
+        unblockReactions() {
+            //[TODO]
+        }
     }
     newClass.is = c.tagName;
+    newClass.observedAttributes = getAttributeNames(props);
     const mixins = args.mixins;
     if (mixins !== undefined) {
         applyMixins(newClass, mixins);
@@ -35,6 +72,27 @@ export function accProps(args) {
     insertProps(args.config.actions, props, args);
     //insertProps(args.config.transforms, props);
     return props;
+}
+export function getAttributeNames(props) {
+    const returnArr = [];
+    for (const key in props) {
+        const prop = props[key];
+        let isAttr = false;
+        switch (prop.type) {
+            case 'Boolean':
+            case 'Number':
+            case 'String':
+                isAttr = true;
+                break;
+            case 'Object':
+                isAttr = prop.parse === true;
+                break;
+        }
+        if (isAttr) {
+            returnArr.push(camelToLisp(key));
+        }
+    }
+    return returnArr;
 }
 const defaultProp = {
     type: 'Object'
@@ -106,6 +164,13 @@ export function addPropsToClass(newClass, props, args) {
                 this[privateKey] = nv;
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
+                        const blocking = x.blocking;
+                        if (blocking !== undefined) {
+                            for (const blocker of blocking) {
+                                if (this[blocker])
+                                    return;
+                            }
+                        }
                         const req = x.required;
                         const upon = x.upon;
                         if (req !== undefined) {

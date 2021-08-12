@@ -2,13 +2,13 @@ import { transform } from 'trans-render/lib/transform.js';
 import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
 export class TemplateManager extends HTMLElement {
-    init(self) {
+    templInit(self) {
         if (self.shadowRoot === null) {
             self.attachShadow({ mode: 'open' });
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
-    initClonedTempl(self) {
+    doInitTransform(self) {
         if (self.initTransform !== undefined) {
             self.__ctx = {
                 match: self.initTransform,

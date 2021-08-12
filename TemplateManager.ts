@@ -5,7 +5,7 @@ import { RenderContext } from 'trans-render/lib/types.d.js';
 
 export class TemplateManager extends HTMLElement{
     __ctx: RenderContext | undefined;
-    init(self: TemplateManager){
+    templInit(self: TemplateManager){
         if(self.shadowRoot === null){
             self.attachShadow({mode: 'open'});
         }
@@ -14,7 +14,7 @@ export class TemplateManager extends HTMLElement{
         
     }
 
-    initClonedTempl(self: TemplateManager){
+    doInitTransform(self: TemplateManager){
         if(self.initTransform !== undefined){
             self.__ctx = {
                 match: self.initTransform,
