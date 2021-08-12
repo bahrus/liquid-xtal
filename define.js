@@ -93,7 +93,8 @@ export function getAttributeNames(props) {
     return returnArr;
 }
 const defaultProp = {
-    type: 'Object'
+    type: 'Object',
+    dry: true,
 };
 export function insertProps(hasUpons, props, args) {
     if (hasUpons === undefined)

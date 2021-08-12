@@ -101,7 +101,8 @@ export function getAttributeNames(props: {[key: string]: PropInfo}){
 }
 
 const defaultProp: PropInfo = {
-    type: 'Object'
+    type: 'Object',
+    dry: true,
 };
 
 export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}, args: DefineArgs){

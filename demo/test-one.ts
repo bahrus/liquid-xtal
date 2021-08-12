@@ -7,13 +7,10 @@ export class CounterSo{
     }
 }
 
-export interface CounterSo {
+export interface CounterSo extends TemplMgmt {
     count: number;
 }
 
-
-
-export interface CounterSo extends TemplMgmt{}
 
 
 const mainTemplate = html`
@@ -51,7 +48,6 @@ define<CounterSo>({
             {
                 upon: ['clonedTemplate', 
                     'initTransform', {
-                        type: 'Object',
                         default: {
                             buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
                         }
@@ -67,7 +63,6 @@ define<CounterSo>({
                         default: 30
                     }, 
                     'updateTransform', {
-                        type: 'Object',
                         default: {
                             "countParts": ["count"]
                         }

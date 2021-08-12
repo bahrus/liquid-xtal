@@ -38,7 +38,6 @@ define({
             {
                 upon: ['clonedTemplate',
                     'initTransform', {
-                        type: 'Object',
                         default: {
                             buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]
                         }
@@ -54,7 +53,6 @@ define({
                         default: 30
                     },
                     'updateTransform', {
-                        type: 'Object',
                         default: {
                             "countParts": ["count"]
                         }
