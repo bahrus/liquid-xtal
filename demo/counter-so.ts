@@ -4,8 +4,6 @@ export interface CounterSo extends TemplMgmt {
     count: number;
 }
 
-
-
 const mainTemplate = html`
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
@@ -31,6 +29,7 @@ const mainTemplate = html`
 `;
 
 define<CounterSo>({
+    //config should be JSON serialiable, importable via JSON import
     config:  {
         tagName:'test-one',
         initPropMerge:{
@@ -50,6 +49,7 @@ define<CounterSo>({
             }
         ],
     },
+    //This is where non serializable stuff goes
     initComplexPropMerge:{
         mainTemplate: mainTemplate
     },

@@ -1,6 +1,12 @@
 # liquid-xtal
 
 ```TypeScript
+import {TemplMgmt, define, html} from 'liquid-xtal/TemplMgmt.js';
+
+export interface CounterSo extends TemplMgmt {
+    count: number;
+}
+
 const mainTemplate = html`
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
@@ -24,35 +30,34 @@ const mainTemplate = html`
     }
 </style>
 `;
-const counterSoWCConfig = {
-    "tagName": "counter-so",
-    "transforms": [
-        {
-            "upon": ["domCache", {"type": "Object"}, "count"],
-            "match":{
-                "countPart": "${host.count}"
-            }
+
+define<CounterSo>({
+    //config should be JSON serialiable, importable via JSON import
+    config:  {
+        tagName:'test-one',
+        initPropMerge:{
+            initTransform: {
+                buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+            },
+            updateTransform: {
+                "countParts": ["count"]
+            },
+            count: 30
         },
-        {
-            "upon": ["domCache"],
-            "match": {
-                "buttonElements":  [{}, {"click": ["changeCount", "dataset.d", "parseInt"]}]
+        actions: [
+            ...TemplMgmt.initConfig,
+            {
+                upon: ['count', 'updateTransform'],
+                ...TemplMgmt.updateConfig
             }
-        }
-    ],
-
-};
-
-
-
-export class CounterSo{
-
-    changeCount(delta: number){
-        this.count += delta;
-    }
-
-
-}
-
-define(CounterSo, mainTemplate, counterSoWCConfig);
+        ],
+    },
+    //This is where non serializable stuff goes
+    initComplexPropMerge:{
+        mainTemplate: mainTemplate
+    },
+    mixins: [TemplMgmt, {
+        changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
+    }],
+});
 ```

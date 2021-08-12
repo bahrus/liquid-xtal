@@ -23,6 +23,7 @@ const mainTemplate = html `
 </style>
 `;
 define({
+    //config should be JSON serialiable, importable via JSON import
     config: {
         tagName: 'test-one',
         initPropMerge: {
@@ -42,6 +43,7 @@ define({
             }
         ],
     },
+    //This is where non serializable stuff goes
     initComplexPropMerge: {
         mainTemplate: mainTemplate
     },
