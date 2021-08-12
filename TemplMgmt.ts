@@ -1,11 +1,13 @@
-import {transform} from 'trans-render/lib/transform.js';
-import {PE} from 'trans-render/lib/PE.js';
+import { transform } from 'trans-render/lib/transform.js';
+import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
 import { RenderContext } from 'trans-render/lib/types.d.js';
+export { define, html } from './define.js';
 
-export class TemplateManager extends HTMLElement{
+
+export class TemplMgmt extends HTMLElement{
     __ctx: RenderContext | undefined;
-    templInit(self: TemplateManager){
+    templInit(self: TemplMgmt){
         if(self.shadowRoot === null){
             self.attachShadow({mode: 'open'});
         }
@@ -14,7 +16,7 @@ export class TemplateManager extends HTMLElement{
         
     }
 
-    doInitTransform(self: TemplateManager){
+    doInitTransform(self: TemplMgmt){
         if(self.initTransform !== undefined){
             self.__ctx = {
                 match: self.initTransform,
@@ -38,13 +40,13 @@ export class TemplateManager extends HTMLElement{
         console.log(self.initTransform);
     }
 
-    doUpdateTransform(self: TemplateManager){
+    doUpdateTransform(self: TemplMgmt){
         this.__ctx!.match = self.updateTransform;
         transform(self.shadowRoot!, this.__ctx!);
     }
 }
 
-export interface TemplateManager{
+export interface TemplMgmt{
     mainTemplate: HTMLTemplateElement;
     clonedTemplate: Node;
     initTransform: any;

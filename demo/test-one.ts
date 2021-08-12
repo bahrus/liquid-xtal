@@ -1,5 +1,4 @@
-import {define, html} from '../define.js';
-import {TemplateManager} from '../TemplateManager.js';
+import {TemplMgmt, define, html} from '../TemplMgmt.js';
 
 export class CounterSo{
 
@@ -14,7 +13,7 @@ export interface CounterSo {
 
 
 
-export interface CounterSo extends TemplateManager{}
+export interface CounterSo extends TemplMgmt{}
 
 
 const mainTemplate = html`
@@ -82,6 +81,6 @@ define<CounterSo>({
     defaultPropVals:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplateManager, CounterSo],
+    mixins: [TemplMgmt, CounterSo],
 
 });

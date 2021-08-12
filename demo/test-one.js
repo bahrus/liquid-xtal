@@ -1,5 +1,4 @@
-import { define, html } from '../define.js';
-import { TemplateManager } from '../TemplateManager.js';
+import { TemplMgmt, define, html } from '../TemplMgmt.js';
 export class CounterSo {
     changeCount(delta) {
         this.count += delta;
@@ -69,5 +68,5 @@ define({
     defaultPropVals: {
         mainTemplate: mainTemplate
     },
-    mixins: [TemplateManager, CounterSo],
+    mixins: [TemplMgmt, CounterSo],
 });

@@ -1,7 +1,8 @@
 import { transform } from 'trans-render/lib/transform.js';
 import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
-export class TemplateManager extends HTMLElement {
+export { define, html } from './define.js';
+export class TemplMgmt extends HTMLElement {
     templInit(self) {
         if (self.shadowRoot === null) {
             self.attachShadow({ mode: 'open' });
