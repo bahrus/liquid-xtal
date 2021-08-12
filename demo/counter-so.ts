@@ -33,30 +33,30 @@ const mainTemplate = html`
 define<CounterSo>({
     config:  {
         tagName:'test-one',
+        initPropMerge:{
+            initTransform: {
+                buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+            },
+            updateTransform: {
+                "countParts": ["count"]
+            },
+            count: 30
+        },
         actions: [
             TemplMgmt.initConfig,
             {
-                upon: ['clonedTemplate', 'initTransform', [
-                        {buttonElements: 
-                            [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
-                        }
-                ]],
+                upon: ['clonedTemplate', 'initTransform'],
                 biff: ['clonedTemplate', 'initTransform'],
                 do: 'doInitTransform'
             },
             {
-                upon: [
-                    'count', [30],
-                    'updateTransform', [{
-                            "countParts": ["count"]
-                    }]
-                ],
+                upon: ['count', 'updateTransform'],
                 biff: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],
     },
-    defaultPropVals:{
+    initComplexPropMerge:{
         mainTemplate: mainTemplate
     },
     mixins: [TemplMgmt, {

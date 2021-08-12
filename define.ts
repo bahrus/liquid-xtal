@@ -38,17 +38,8 @@ export function define<T = any>(args: DefineArgs<T>){
             }
         }
         connectedCallback(){
-
-            const defaultVals: any = {};
-            for(const key in props){
-                const prop = props[key];
-                const defaultVal = prop.default;
-                if(defaultVal !== undefined){
-                    defaultVals[key] = defaultVal;
-                }
-                
-            }
-            propUp(this, Object.keys(props), defaultVals);
+            //TODO merge attributes?
+            propUp(this, Object.keys(props), {...args.initComplexPropMerge, ...args.config.initPropMerge});
             if(c.initMethod !== undefined){
                 (<any>this)[c.initMethod](this);
             }
@@ -107,7 +98,9 @@ const defaultProp: PropInfo = {
 
 export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}, args: DefineArgs){
     if(hasUpons === undefined) return;
-    const nonSerializableDefaults = args.defaultPropVals;
+    // const nonSerializableDefaults = args.initComplexPropMerge;
+    // const serializableDefaults = args.config.initPropMerge;
+    const defaults = {...args.initComplexPropMerge, ...args.config.initPropMerge};
     for(const hasUpon of hasUpons){
         const upon = hasUpon.upon;
         switch(typeof upon){
@@ -115,7 +108,8 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                 if(props[upon] === undefined){
                     const prop: PropInfo = {...defaultProp};
                     props[upon] = prop;
-                    setDefVal(nonSerializableDefaults, upon, prop);
+                    //setDefVal(nonSerializableDefaults, upon, prop);
+                    //setDefVal(serializableDefaults, upon, prop);
                 }
                 break;
             case 'object':
@@ -127,32 +121,26 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                                 if(props[dependency] === undefined){
                                     const prop: PropInfo = {...defaultProp};
                                     props[dependency] = prop;
-                                    setDefVal(nonSerializableDefaults, dependency, prop);
+                                    const defaultVal = defaults[dependency];
+                                    switch(typeof defaultVal){
+                                        case 'string':
+                                            prop.type = 'String';
+                                            break;
+                                        case 'number': 
+                                            prop.type = 'Number';
+                                            break;
+                                        case 'boolean':
+                                            prop.type = 'Number';
+                                            break;
+
+
+                                    }
                                 }
                                 lastProp = props[dependency];
                                 break;
                             case 'object':
                                 if(lastProp !== undefined){
-                                    if(Array.isArray(dependency)){
-                                        const head = dependency[0];
-                                        lastProp.default = head;
-                                        switch(typeof head){
-                                            case 'number':
-                                                lastProp.type = 'Number';
-                                                break;
-                                            case 'boolean':
-                                                lastProp.type = 'Boolean';
-                                                break;
-                                            case 'string':
-                                                lastProp.type = 'String';
-                                                break;
-                                            default:
-                                                //lastProp.type = 'Object';
-                                        }
-                                    }else{
-                                        Object.assign(lastProp, dependency);
-                                    }
-                                    
+                                    Object.assign(lastProp, dependency);
                                 }else{
                                     throw 'Syntax Error';
                                 }
@@ -169,12 +157,12 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
     }
 }
 
-function setDefVal(defaults: any, key: string, prop: PropInfo){
-    const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
-    if(nonSerializableDefault !== undefined){
-        prop.default = nonSerializableDefault;
-    }
-}
+// function setDefVal(defaults: any, key: string, prop: PropInfo){
+//     const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
+//     if(nonSerializableDefault !== undefined){
+//         prop.default = nonSerializableDefault;
+//     }
+// }
 
 export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): T}, props: {[key: string]: PropInfo}, args: DefineArgs){
     const proto = newClass.prototype;

@@ -3,9 +3,7 @@ export interface DefineArgs<TMixinComposite = any>{
     mixins: any[],
     mainTemplate?: HTMLTemplateElement;
     /** use this only for defaults that can't be JSON serialized in config */
-    defaultPropVals?: {
-        [P in keyof TMixinComposite]?: any;
-    }
+    initComplexPropMerge?: Partial<TMixinComposite>;
     config: WCConfig<TMixinComposite>;
     
 }
@@ -13,6 +11,7 @@ export interface DefineArgs<TMixinComposite = any>{
 export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
+    initPropMerge?: Partial<TMixinComposite>;
     //transforms?: Transform<TMixinComposite>[];
     actions?: Action<TMixinComposite>[];
     blockingProps?: keyof TMixinComposite | StringOrPropInfo[]; //TODO
@@ -40,7 +39,7 @@ export type MatchRHS<TMixinComposite = any> = string;
 
 export interface PropInfo{
     type?: "String" | "Number" | "Boolean" | "Object";
-    default?: any;
+    //default?: any;
     dry?: boolean;
     parse?: boolean;
 }
