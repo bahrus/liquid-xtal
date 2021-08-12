@@ -125,7 +125,26 @@ export function insertProps(hasUpons, props, args) {
                                 break;
                             case 'object':
                                 if (lastProp !== undefined) {
-                                    Object.assign(lastProp, dependency);
+                                    if (Array.isArray(dependency)) {
+                                        const head = dependency[0];
+                                        lastProp.default = head;
+                                        switch (typeof head) {
+                                            case 'number':
+                                                lastProp.type = 'Number';
+                                                break;
+                                            case 'boolean':
+                                                lastProp.type = 'Boolean';
+                                                break;
+                                            case 'string':
+                                                lastProp.type = 'String';
+                                                break;
+                                            default:
+                                            //lastProp.type = 'Object';
+                                        }
+                                    }
+                                    else {
+                                        Object.assign(lastProp, dependency);
+                                    }
                                 }
                                 else {
                                     throw 'Syntax Error';

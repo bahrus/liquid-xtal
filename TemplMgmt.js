@@ -30,7 +30,6 @@ export class TemplMgmt extends HTMLElement {
             transform(self.clonedTemplate, self.__ctx);
         }
         self.shadowRoot.appendChild(self.clonedTemplate);
-        console.log(self.initTransform);
     }
     doUpdateTransform(self) {
         this.__ctx.match = self.updateTransform;

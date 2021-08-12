@@ -36,27 +36,20 @@ define<CounterSo>({
         actions: [
             TemplMgmt.initConfig,
             {
-                upon: ['clonedTemplate', 
-                    'initTransform', {
-                        default: {
-                            buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+                upon: ['clonedTemplate', 'initTransform', [
+                        {buttonElements: 
+                            [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
                         }
-                    }
-                ],
+                ]],
                 biff: ['clonedTemplate', 'initTransform'],
                 do: 'doInitTransform'
             },
             {
                 upon: [
-                    'count', {
-                        type: 'Number',
-                        default: 30
-                    }, 
-                    'updateTransform', {
-                        default: {
+                    'count', [30],
+                    'updateTransform', [{
                             "countParts": ["count"]
-                        }
-                    }
+                    }]
                 ],
                 biff: ['updateTransform'],
                 do: 'doUpdateTransform',

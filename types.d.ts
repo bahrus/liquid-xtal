@@ -45,5 +45,5 @@ export interface PropInfo{
     parse?: boolean;
 }
 
-export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo;
+export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo | any[];
 

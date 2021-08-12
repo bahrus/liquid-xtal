@@ -39,7 +39,6 @@ export class TemplMgmt extends HTMLElement{
             transform(self.clonedTemplate as DocumentFragment, self.__ctx);
         }
         self.shadowRoot!.appendChild(self.clonedTemplate);
-        console.log(self.initTransform);
     }
 
     doUpdateTransform(self: TemplMgmt){
