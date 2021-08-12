@@ -43,7 +43,7 @@ define({
                         }
                     }
                 ],
-                required: 'all',
+                andIf: ['clonedTemplate', 'initTransform'],
                 do: 'doInitTransform'
             },
             {
@@ -58,7 +58,7 @@ define({
                         }
                     }
                 ],
-                required: ['updateTransform'],
+                andIf: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],

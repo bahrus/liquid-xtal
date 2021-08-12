@@ -171,32 +171,11 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                 this[privateKey] = nv;
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
-                        // const blocking = x.blocking;
-                        // if(blocking !== undefined){
-                        //     for(const blocker of blocking){
-                        //         if(this[blocker]) return;
-                        //     }
-                        // }
-                        const req = x.required;
+                        const andIf = x.andIf;
                         const upon = x.upon;
-                        if(req !== undefined){
-                            let propKeys: string[] | undefined;
-                            if(req === 'all'){
-                                switch(typeof upon){
-                                    case 'string':
-                                        propKeys = [upon];
-                                        break;
-                                    case 'object':
-                                        propKeys = upon.filter(x => typeof x === 'string') as string[];
-                                        break;
-                                    default:
-                                        throw 'NI';
-                                }
-                            }else{
-                                propKeys = req;
-                            }
-                            for(const reqProp of propKeys){
-                                if(!this[reqProp]) return false;
+                        if(andIf !== undefined){
+                            for(const key of andIf){
+                                if(!this[key]) return false;
                             }
                         }
                         

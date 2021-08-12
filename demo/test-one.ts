@@ -53,7 +53,7 @@ define<CounterSo>({
                         }
                     }
                 ],
-                required: 'all',
+                andIf: ['clonedTemplate', 'initTransform'],
                 do: 'doInitTransform'
             },
             {
@@ -68,7 +68,7 @@ define<CounterSo>({
                         }
                     }
                 ],
-                required: ['updateTransform'],
+                andIf: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],

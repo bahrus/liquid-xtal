@@ -19,7 +19,7 @@ export interface WCConfig<TMixinComposite = any>{
 
 export interface HasUpon<TMixinComposite = any>{
     upon: keyof TMixinComposite | StringOrPropInfo[];
-    required?: 'all' | (keyof TMixinComposite & string)[];
+    andIf?: (keyof TMixinComposite & string)[];
     //blocking?: (keyof TMixinComposite & string)[];
     dry?: boolean,
 }
