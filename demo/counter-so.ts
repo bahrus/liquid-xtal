@@ -1,7 +1,7 @@
 import {TemplMgmt, define, html} from '../TemplMgmt.js';
 
 export class CounterSo{
-    changeCount(delta: number){
+    changeCount(self: CounterSo,delta: number){
         this.count += delta;
     }
 }

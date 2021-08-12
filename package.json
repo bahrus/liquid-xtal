@@ -12,7 +12,7 @@
     "url": "git+https://github.com/bahrus/liquid-xtal.git"
   },
   "dependencies": {
-    "trans-render": "0.0.295",
+    "trans-render": "0.0.296",
     "xtal-element": "0.0.420"
   },
   "devDependencies": {
