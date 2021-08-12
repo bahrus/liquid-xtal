@@ -37,12 +37,14 @@ define({
                 do: 'init'
             },
             {
-                upon: ['clonedTemplate', 'initTransform', {
+                upon: ['clonedTemplate',
+                    'initTransform', {
                         type: 'Object',
                         default: {
                             buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]
                         }
-                    }],
+                    }
+                ],
                 required: 'all',
                 do: 'initClonedTempl'
             },

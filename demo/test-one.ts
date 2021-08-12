@@ -50,12 +50,14 @@ define<CounterSo>({
                 do: 'init'
             },
             {
-                upon: ['clonedTemplate', 'initTransform', {
-                    type: 'Object',
-                    default: {
-                        buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+                upon: ['clonedTemplate', 
+                    'initTransform', {
+                        type: 'Object',
+                        default: {
+                            buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
+                        }
                     }
-                }],
+                ],
                 required: 'all',
                 do: 'initClonedTempl'
             },
