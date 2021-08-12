@@ -38,18 +38,17 @@ export function define<T = any>(args: DefineArgs<T>){
             }
         }
         connectedCallback(){
-            // if(args.defaultPropVals !== undefined){
-            //     Object.assign(this, args.defaultPropVals);
-            // }
-            propUp(this, Object.keys(props) ,)
+
+            const defaultVals: any = {};
             for(const key in props){
                 const prop = props[key];
                 const defaultVal = prop.default;
                 if(defaultVal !== undefined){
-                    (<any>this)[key] = prop.default;
+                    defaultVals[key] = defaultVal;
                 }
                 
             }
+            propUp(this, Object.keys(props), defaultVals);
             if(c.initMethod !== undefined){
                 (<any>this)[c.initMethod](this);
             }

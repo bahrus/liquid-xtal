@@ -35,17 +35,15 @@ export function define(args) {
             }
         }
         connectedCallback() {
-            // if(args.defaultPropVals !== undefined){
-            //     Object.assign(this, args.defaultPropVals);
-            // }
-            propUp(this, Object.keys(props));
+            const defaultVals = {};
             for (const key in props) {
                 const prop = props[key];
                 const defaultVal = prop.default;
                 if (defaultVal !== undefined) {
-                    this[key] = prop.default;
+                    defaultVals[key] = defaultVal;
                 }
             }
+            propUp(this, Object.keys(props), defaultVals);
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);
             }
