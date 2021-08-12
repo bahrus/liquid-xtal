@@ -164,13 +164,12 @@ export function addPropsToClass(newClass, props, args) {
                 this[privateKey] = nv;
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
-                        const blocking = x.blocking;
-                        if (blocking !== undefined) {
-                            for (const blocker of blocking) {
-                                if (this[blocker])
-                                    return;
-                            }
-                        }
+                        // const blocking = x.blocking;
+                        // if(blocking !== undefined){
+                        //     for(const blocker of blocking){
+                        //         if(this[blocker]) return;
+                        //     }
+                        // }
                         const req = x.required;
                         const upon = x.upon;
                         if (req !== undefined) {
