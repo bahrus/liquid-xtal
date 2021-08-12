@@ -1,11 +1,5 @@
 import {TemplMgmt, define, html} from '../TemplMgmt.js';
 
-// export class CounterSo{
-//     changeCount(self: CounterSo,delta: number){
-//         this.count += delta;
-//     }
-// }
-
 export interface CounterSo extends TemplMgmt {
     count: number;
 }
@@ -40,10 +34,7 @@ define<CounterSo>({
     config:  {
         tagName:'test-one',
         actions: [
-            {
-                upon: 'mainTemplate',
-                do: 'templInit'
-            },
+            TemplMgmt.initConfig,
             {
                 upon: ['clonedTemplate', 
                     'initTransform', {

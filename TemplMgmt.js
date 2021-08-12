@@ -37,3 +37,7 @@ export class TemplMgmt extends HTMLElement {
         transform(self.shadowRoot, this.__ctx);
     }
 }
+TemplMgmt.initConfig = {
+    upon: 'mainTemplate',
+    do: 'templInit'
+};

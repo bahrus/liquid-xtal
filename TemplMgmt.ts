@@ -1,8 +1,10 @@
 import { transform } from 'trans-render/lib/transform.js';
 import { PE } from 'trans-render/lib/PE.js';
+import { Action } from './types.d.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
 import { RenderContext } from 'trans-render/lib/types.d.js';
 export { define, html } from './define.js';
+
 
 
 export class TemplMgmt extends HTMLElement{
@@ -44,6 +46,11 @@ export class TemplMgmt extends HTMLElement{
         this.__ctx!.match = self.updateTransform;
         transform(self.shadowRoot!, this.__ctx!);
     }
+
+    static initConfig : Action<TemplMgmt> = {
+        upon: 'mainTemplate',
+        do: 'templInit'
+    };
 }
 
 export interface TemplMgmt{

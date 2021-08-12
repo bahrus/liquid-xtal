@@ -26,10 +26,7 @@ define({
     config: {
         tagName: 'test-one',
         actions: [
-            {
-                upon: 'mainTemplate',
-                do: 'templInit'
-            },
+            TemplMgmt.initConfig,
             {
                 upon: ['clonedTemplate',
                     'initTransform', {
