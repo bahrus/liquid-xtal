@@ -1,5 +1,6 @@
 export interface DefineArgs<TMixinComposite = any>{
-    mixins?: {new(): Object}[];
+    //mixins?: {new(): Object}[];
+    mixins: any[],
     mainTemplate?: HTMLTemplateElement;
     /** use this only for defaults that can't be JSON serialized in config */
     defaultPropVals?: {
@@ -19,7 +20,10 @@ export interface WCConfig<TMixinComposite = any>{
 
 export interface HasUpon<TMixinComposite = any>{
     upon: keyof TMixinComposite | StringOrPropInfo[];
-    andIf?: (keyof TMixinComposite & string)[];
+    /**
+     * block if falsy
+     */
+    biff?: (keyof TMixinComposite & string)[];
     //blocking?: (keyof TMixinComposite & string)[];
     dry?: boolean,
 }

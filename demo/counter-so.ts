@@ -1,7 +1,6 @@
 import {TemplMgmt, define, html} from '../TemplMgmt.js';
 
 export class CounterSo{
-
     changeCount(delta: number){
         this.count += delta;
     }
@@ -53,7 +52,7 @@ define<CounterSo>({
                         }
                     }
                 ],
-                andIf: ['clonedTemplate', 'initTransform'],
+                biff: ['clonedTemplate', 'initTransform'],
                 do: 'doInitTransform'
             },
             {
@@ -68,7 +67,7 @@ define<CounterSo>({
                         }
                     }
                 ],
-                andIf: ['updateTransform'],
+                biff: ['updateTransform'],
                 do: 'doUpdateTransform',
             }
         ],

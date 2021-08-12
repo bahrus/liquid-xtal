@@ -171,7 +171,7 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
                 this[privateKey] = nv;
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
-                        const andIf = x.andIf;
+                        const andIf = x.biff;
                         const upon = x.upon;
                         if(andIf !== undefined){
                             for(const key of andIf){

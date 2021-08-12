@@ -9,6 +9,6 @@
     "files":[
       "define.ts",
       "TemplMgmt.ts",
-      "demo/test-one.ts"
+      "demo/counter-so.ts"
     ]
   }
