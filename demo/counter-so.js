@@ -1,9 +1,4 @@
 import { TemplMgmt, define, html } from '../TemplMgmt.js';
-export class CounterSo {
-    changeCount(self, delta) {
-        this.count += delta;
-    }
-}
 const mainTemplate = html `
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
@@ -66,5 +61,7 @@ define({
     defaultPropVals: {
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmt, CounterSo],
+    mixins: [TemplMgmt, {
+            changeCount: (self, d, e) => self.count += d,
+        }],
 });

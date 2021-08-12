@@ -1,10 +1,10 @@
 import {TemplMgmt, define, html} from '../TemplMgmt.js';
 
-export class CounterSo{
-    changeCount(self: CounterSo,delta: number){
-        this.count += delta;
-    }
-}
+// export class CounterSo{
+//     changeCount(self: CounterSo,delta: number){
+//         this.count += delta;
+//     }
+// }
 
 export interface CounterSo extends TemplMgmt {
     count: number;
@@ -75,6 +75,8 @@ define<CounterSo>({
     defaultPropVals:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmt, CounterSo],
+    mixins: [TemplMgmt, {
+        changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
+    }],
 
 });
