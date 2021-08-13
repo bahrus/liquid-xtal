@@ -25,7 +25,7 @@ const mainTemplate = html `
 define({
     //config should be JSON serialiable, importable via JSON import
     config: {
-        tagName: 'test-one',
+        tagName: 'counter-so',
         initPropMerge: {
             initTransform: {
                 buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]

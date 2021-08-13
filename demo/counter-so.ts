@@ -31,7 +31,7 @@ const mainTemplate = html`
 define<CounterSo>({
     //config should be JSON serialiable, importable via JSON import
     config:  {
-        tagName:'test-one',
+        tagName:'counter-so',
         initPropMerge:{
             initTransform: {
                 buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
@@ -40,7 +40,6 @@ define<CounterSo>({
                 "countParts": ["count"]
             },
             count: 30,
-            
         },
         actions: [
             ...TemplMgmt.initConfig,
