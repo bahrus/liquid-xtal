@@ -19,7 +19,13 @@ export abstract class TemplMgmtBase extends HTMLElement{
         
     }
 
-    abstract doInitTransform(self: TemplMgmtBase): void;
+    abstract loadPlugins(self: TemplMgmtBase): void;
+
+    doInitTransform(self: TemplMgmtBase): void{
+        this.loadPlugins(self);
+        transform(self.clonedTemplate as DocumentFragment, self.__ctx!);
+        self.shadowRoot!.appendChild(self.clonedTemplate);
+    }
 
     doUpdateTransform(self: TemplMgmtBase){
         this.__ctx!.match = self.updateTransform;

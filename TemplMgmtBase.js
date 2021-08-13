@@ -7,6 +7,11 @@ export class TemplMgmtBase extends HTMLElement {
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
+    doInitTransform(self) {
+        this.loadPlugins(self);
+        transform(self.clonedTemplate, self.__ctx);
+        self.shadowRoot.appendChild(self.clonedTemplate);
+    }
     doUpdateTransform(self) {
         this.__ctx.match = self.updateTransform;
         transform(self.shadowRoot, this.__ctx);
