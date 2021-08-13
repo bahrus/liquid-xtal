@@ -29,7 +29,7 @@ const mainTemplate = html`
 `;
 
 define<CounterSo>({
-    //config should be JSON serialiable, importable via JSON import
+    //config should be JSON serializable, importable via JSON import
     config:  {
         tagName:'counter-so',
         initPropMerge:{
