@@ -1,14 +1,8 @@
-import { transform } from 'trans-render/lib/transform.js';
+import { TemplMgmtBase, transform } from './TemplMgmtBase.js';
 import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
 export { define, html } from './define.js';
-export class TemplMgmt extends HTMLElement {
-    templInit(self) {
-        if (self.shadowRoot === null) {
-            self.attachShadow({ mode: 'open' });
-        }
-        self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
-    }
+export class TemplMgmt extends TemplMgmtBase {
     doInitTransform(self) {
         if (self.initTransform !== undefined) {
             self.__ctx = {
@@ -32,22 +26,9 @@ export class TemplMgmt extends HTMLElement {
         self.shadowRoot.appendChild(self.clonedTemplate);
     }
     doUpdateTransform(self) {
-        this.__ctx.match = self.updateTransform;
-        transform(self.shadowRoot, this.__ctx);
+        super.doUpdateTransform(self);
+    }
+    templInit(self) {
+        super.templInit(self);
     }
 }
-TemplMgmt.initConfig = [
-    {
-        upon: 'mainTemplate',
-        do: 'templInit'
-    },
-    {
-        upon: ['clonedTemplate', 'initTransform'],
-        biff: ['clonedTemplate', 'initTransform'],
-        do: 'doInitTransform'
-    }
-];
-TemplMgmt.updateConfig = {
-    biff: ['updateTransform'],
-    do: 'doUpdateTransform',
-};

@@ -1,4 +1,4 @@
-import {TemplMgmt, define, html} from '../TemplMgmt.js';
+import {TemplMgmt, define, html} from '../TemplMgmtWithPEST.js';
 
 export interface CounterSo extends TemplMgmt {
     count: number;
