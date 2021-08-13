@@ -19,6 +19,7 @@ export class TemplMgmt extends TemplMgmtBase {
                     ctor: SplitText
                 }
             ],
+            options: self.renderOptions,
         };
     }
     BF7Uef8Chxn9FRxQ(self) {

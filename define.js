@@ -37,7 +37,13 @@ export function define(args) {
         connectedCallback() {
             //TODO merge attributes?
             this.attachQR();
-            propUp(this, Object.keys(props), { ...args.config.initPropMerge, ...args.initComplexPropMerge });
+            const defaults = { ...args.config.initPropMerge, ...args.initComplexPropMerge };
+            for (const key in defaults) {
+                if (props[key] === undefined) {
+                    this[key] = defaults[key];
+                }
+            }
+            propUp(this, Object.keys(props), defaults);
             this.detachQR();
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);

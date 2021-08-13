@@ -2,7 +2,7 @@ import { transform } from 'trans-render/lib/transform.js';
 
 import { Action,  } from './types.js';
 
-import { RenderContext } from 'trans-render/lib/types.d.js';
+import { RenderContext, RenderOptions } from 'trans-render/lib/types.d.js';
 
 export { transform } from 'trans-render/lib/transform.js';
 
@@ -61,4 +61,5 @@ export interface TemplMgmtBase{
     initTransform: any;
     updateTransform: any;
     noshadow: boolean;
+    renderOptions: RenderOptions;
 }

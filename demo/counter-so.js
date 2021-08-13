@@ -34,6 +34,9 @@ define({
                 "countParts": ["count"]
             },
             count: 30,
+            renderOptions: {
+                cacheQueries: true,
+            },
         },
         actions: [
             ...TemplMgmt.doInitTransform,
