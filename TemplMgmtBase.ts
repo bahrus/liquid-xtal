@@ -10,7 +10,7 @@ export { transform } from 'trans-render/lib/transform.js';
 
 export abstract class TemplMgmtBase extends HTMLElement{
     __ctx: RenderContext | undefined;
-    templInit(self: TemplMgmtBase){
+    qHHrvPmMyE2mcufi1fpfZQ(self: TemplMgmtBase){
         if(self.shadowRoot === null && !self.noshadow){
             self.attachShadow({mode: 'open'});
         }
@@ -21,35 +21,37 @@ export abstract class TemplMgmtBase extends HTMLElement{
 
     abstract loadPlugins(self: TemplMgmtBase): void;
 
-    doInitTransform(self: TemplMgmtBase): void{
+    //do init transform
+    BF7Uef8Chxn9FRxQ(self: TemplMgmtBase): void{
         this.loadPlugins(self);
         transform(self.clonedTemplate as DocumentFragment, self.__ctx!);
         const root = self.noshadow ? self : self.shadowRoot!;
         root.appendChild(self.clonedTemplate);
     }
 
-    doUpdateTransform(self: TemplMgmtBase){
+    //do update transform
+    EkRpFHI6U0iNctt0kOM(self: TemplMgmtBase){
         this.__ctx!.match = self.updateTransform;
         const root = self.noshadow ? self : self.shadowRoot!;
         transform(root, this.__ctx!);
     }
 
-    static initConfig : Action<TemplMgmtBase>[] = [
+    static doInitTransform : Action<TemplMgmtBase>[] = [
         {
             upon: ['mainTemplate', 'noshadow'],
-            do: 'templInit'
+            do: 'qHHrvPmMyE2mcufi1fpfZQ'
         },
         {
             upon: ['clonedTemplate', 'initTransform'],
             biff: ['clonedTemplate', 'initTransform'],
-            do: 'doInitTransform'
+            do: 'BF7Uef8Chxn9FRxQ'
         }
     ];
 
-    static updateConfig: Action<TemplMgmtBase> = {
+    static doUpdateTransform: Action<TemplMgmtBase> = {
         
         biff: ['updateTransform'],
-        do: 'doUpdateTransform',
+        do: 'EkRpFHI6U0iNctt0kOM',
     };
 }
 

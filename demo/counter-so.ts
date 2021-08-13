@@ -42,10 +42,10 @@ define<CounterSo>({
             count: 30,
         },
         actions: [
-            ...TemplMgmt.initConfig,
+            ...TemplMgmt.doInitTransform,
             {
                 upon: ['count', 'updateTransform'],
-                ...TemplMgmt.updateConfig
+                ...TemplMgmt.doUpdateTransform
             }
         ],
     },

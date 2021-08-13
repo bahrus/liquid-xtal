@@ -21,13 +21,13 @@ export class TemplMgmt extends TemplMgmtBase {
             ],
         };
     }
-    doInitTransform(self) {
-        super.doInitTransform(self);
+    BF7Uef8Chxn9FRxQ(self) {
+        super.BF7Uef8Chxn9FRxQ(self);
     }
-    doUpdateTransform(self) {
-        super.doUpdateTransform(self);
+    EkRpFHI6U0iNctt0kOM(self) {
+        super.EkRpFHI6U0iNctt0kOM(self);
     }
-    templInit(self) {
-        super.templInit(self);
+    qHHrvPmMyE2mcufi1fpfZQ(self) {
+        super.qHHrvPmMyE2mcufi1fpfZQ(self);
     }
 }

@@ -147,8 +147,6 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
                 if(props[upon] === undefined){
                     const prop: PropInfo = {...defaultProp};
                     props[upon] = prop;
-                    //setDefVal(nonSerializableDefaults, upon, prop);
-                    //setDefVal(serializableDefaults, upon, prop);
                 }
                 break;
             case 'object':

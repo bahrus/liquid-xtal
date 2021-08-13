@@ -14,7 +14,8 @@ export interface WCConfig<TMixinComposite = any>{
     initPropMerge?: Partial<TMixinComposite>;
     //transforms?: Transform<TMixinComposite>[];
     actions?: Action<TMixinComposite>[];
-    blockingProps?: keyof TMixinComposite | StringOrPropInfo[]; //TODO
+    //queue if truthy
+    quit?: keyof TMixinComposite[]; //TODO
 }
 
 export interface HasUpon<TMixinComposite = any>{

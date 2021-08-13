@@ -1,36 +1,38 @@
 import { transform } from 'trans-render/lib/transform.js';
 export { transform } from 'trans-render/lib/transform.js';
 export class TemplMgmtBase extends HTMLElement {
-    templInit(self) {
+    qHHrvPmMyE2mcufi1fpfZQ(self) {
         if (self.shadowRoot === null && !self.noshadow) {
             self.attachShadow({ mode: 'open' });
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
-    doInitTransform(self) {
+    //do init transform
+    BF7Uef8Chxn9FRxQ(self) {
         this.loadPlugins(self);
         transform(self.clonedTemplate, self.__ctx);
         const root = self.noshadow ? self : self.shadowRoot;
         root.appendChild(self.clonedTemplate);
     }
-    doUpdateTransform(self) {
+    //do update transform
+    EkRpFHI6U0iNctt0kOM(self) {
         this.__ctx.match = self.updateTransform;
         const root = self.noshadow ? self : self.shadowRoot;
         transform(root, this.__ctx);
     }
 }
-TemplMgmtBase.initConfig = [
+TemplMgmtBase.doInitTransform = [
     {
         upon: ['mainTemplate', 'noshadow'],
-        do: 'templInit'
+        do: 'qHHrvPmMyE2mcufi1fpfZQ'
     },
     {
         upon: ['clonedTemplate', 'initTransform'],
         biff: ['clonedTemplate', 'initTransform'],
-        do: 'doInitTransform'
+        do: 'BF7Uef8Chxn9FRxQ'
     }
 ];
-TemplMgmtBase.updateConfig = {
+TemplMgmtBase.doUpdateTransform = {
     biff: ['updateTransform'],
-    do: 'doUpdateTransform',
+    do: 'EkRpFHI6U0iNctt0kOM',
 };
