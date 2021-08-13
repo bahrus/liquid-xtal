@@ -36,7 +36,7 @@ export abstract class TemplMgmtBase extends HTMLElement{
 
     static initConfig : Action<TemplMgmtBase>[] = [
         {
-            upon: 'mainTemplate',
+            upon: ['mainTemplate', 'noshadow'],
             do: 'templInit'
         },
         {

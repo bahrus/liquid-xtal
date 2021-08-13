@@ -36,7 +36,7 @@ export function define(args) {
         }
         connectedCallback() {
             //TODO merge attributes?
-            propUp(this, Object.keys(props), { ...args.initComplexPropMerge, ...args.config.initPropMerge });
+            propUp(this, Object.keys(props), { ...args.config.initPropMerge, ...args.initComplexPropMerge });
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);
             }

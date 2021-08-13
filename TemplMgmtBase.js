@@ -21,7 +21,7 @@ export class TemplMgmtBase extends HTMLElement {
 }
 TemplMgmtBase.initConfig = [
     {
-        upon: 'mainTemplate',
+        upon: ['mainTemplate', 'noshadow'],
         do: 'templInit'
     },
     {
