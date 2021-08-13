@@ -11,7 +11,7 @@ export { transform } from 'trans-render/lib/transform.js';
 export abstract class TemplMgmtBase extends HTMLElement{
     __ctx: RenderContext | undefined;
     templInit(self: TemplMgmtBase){
-        if(self.shadowRoot === null){
+        if(self.shadowRoot === null && !self.noshadow){
             self.attachShadow({mode: 'open'});
         }
         
@@ -24,12 +24,14 @@ export abstract class TemplMgmtBase extends HTMLElement{
     doInitTransform(self: TemplMgmtBase): void{
         this.loadPlugins(self);
         transform(self.clonedTemplate as DocumentFragment, self.__ctx!);
-        self.shadowRoot!.appendChild(self.clonedTemplate);
+        const root = self.noshadow ? self : self.shadowRoot!;
+        root.appendChild(self.clonedTemplate);
     }
 
     doUpdateTransform(self: TemplMgmtBase){
         this.__ctx!.match = self.updateTransform;
-        transform(self.shadowRoot!, this.__ctx!);
+        const root = self.noshadow ? self : self.shadowRoot!;
+        transform(root, this.__ctx!);
     }
 
     static initConfig : Action<TemplMgmtBase>[] = [
@@ -56,5 +58,5 @@ export interface TemplMgmtBase{
     clonedTemplate: Node;
     initTransform: any;
     updateTransform: any;
-    
+    noshadow: boolean;
 }

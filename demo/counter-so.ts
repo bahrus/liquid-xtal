@@ -39,7 +39,8 @@ define<CounterSo>({
             updateTransform: {
                 "countParts": ["count"]
             },
-            count: 30
+            count: 30,
+            
         },
         actions: [
             ...TemplMgmt.initConfig,

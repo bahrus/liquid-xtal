@@ -2,7 +2,7 @@ import { transform } from 'trans-render/lib/transform.js';
 export { transform } from 'trans-render/lib/transform.js';
 export class TemplMgmtBase extends HTMLElement {
     templInit(self) {
-        if (self.shadowRoot === null) {
+        if (self.shadowRoot === null && !self.noshadow) {
             self.attachShadow({ mode: 'open' });
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
@@ -10,11 +10,13 @@ export class TemplMgmtBase extends HTMLElement {
     doInitTransform(self) {
         this.loadPlugins(self);
         transform(self.clonedTemplate, self.__ctx);
-        self.shadowRoot.appendChild(self.clonedTemplate);
+        const root = self.noshadow ? self : self.shadowRoot;
+        root.appendChild(self.clonedTemplate);
     }
     doUpdateTransform(self) {
         this.__ctx.match = self.updateTransform;
-        transform(self.shadowRoot, this.__ctx);
+        const root = self.noshadow ? self : self.shadowRoot;
+        transform(root, this.__ctx);
     }
 }
 TemplMgmtBase.initConfig = [
