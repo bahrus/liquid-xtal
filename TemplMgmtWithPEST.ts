@@ -23,15 +23,15 @@ export class TemplMgmt extends TemplMgmtBase{
             ],
         };
     }
-    override BF7Uef8Chxn9FRxQ(self: TemplMgmtBase){
+    BF7Uef8Chxn9FRxQ(self: TemplMgmtBase){
         super.BF7Uef8Chxn9FRxQ(self);
     }
 
-    override EkRpFHI6U0iNctt0kOM(self: TemplMgmtBase){
+    EkRpFHI6U0iNctt0kOM(self: TemplMgmtBase){
         super.EkRpFHI6U0iNctt0kOM(self);
     }
 
-    override qHHrvPmMyE2mcufi1fpfZQ(self: TemplMgmtBase){
+    qHHrvPmMyE2mcufi1fpfZQ(self: TemplMgmtBase){
         super.qHHrvPmMyE2mcufi1fpfZQ(self);
     }
 }
