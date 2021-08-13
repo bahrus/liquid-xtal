@@ -1,7 +1,7 @@
 # liquid-xtal
 
 ```TypeScript
-import {TemplMgmt, define, html} from 'liquid-xtal/TemplMgmt.js';
+import {TemplMgmt, define, html} from '../TemplMgmtWithPEST.js';
 
 export interface CounterSo extends TemplMgmt {
     count: number;
@@ -34,7 +34,7 @@ const mainTemplate = html`
 define<CounterSo>({
     //config should be JSON serialiable, importable via JSON import
     config:  {
-        tagName:'test-one',
+        tagName:'counter-so',
         initPropMerge:{
             initTransform: {
                 buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
@@ -42,13 +42,13 @@ define<CounterSo>({
             updateTransform: {
                 "countParts": ["count"]
             },
-            count: 30
+            count: 30,
         },
         actions: [
-            ...TemplMgmt.initConfig,
+            ...TemplMgmt.doInitTransform,
             {
                 upon: ['count', 'updateTransform'],
-                ...TemplMgmt.updateConfig
+                ...TemplMgmt.doUpdateTransform
             }
         ],
     },
