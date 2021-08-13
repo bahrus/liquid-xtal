@@ -127,8 +127,6 @@ const defaultProp = {
 export function insertProps(hasUpons, props, args) {
     if (hasUpons === undefined)
         return;
-    // const nonSerializableDefaults = args.initComplexPropMerge;
-    // const serializableDefaults = args.config.initPropMerge;
     const defaults = { ...args.initComplexPropMerge, ...args.config.initPropMerge };
     for (const hasUpon of hasUpons) {
         const upon = hasUpon.upon;

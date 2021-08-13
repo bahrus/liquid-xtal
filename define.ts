@@ -139,8 +139,6 @@ const defaultProp: PropInfo = {
 
 export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}, args: DefineArgs){
     if(hasUpons === undefined) return;
-    // const nonSerializableDefaults = args.initComplexPropMerge;
-    // const serializableDefaults = args.config.initPropMerge;
     const defaults = {...args.initComplexPropMerge, ...args.config.initPropMerge};
     for(const hasUpon of hasUpons){
         const upon = hasUpon.upon;
@@ -257,7 +255,7 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
 
 
 
-const QR = (propName: string, self: HasPropChangeQueue){
+const QR = (propName: string, self: HasPropChangeQueue) => {
     if(self.propChangeQueue === undefined) self.propChangeQueue = new Set<string>();
     self.propChangeQueue.add(propName);
 }
