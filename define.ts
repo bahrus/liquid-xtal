@@ -1,11 +1,13 @@
 import { define as def } from 'xtal-element/lib/define.js';
 import { applyMixins } from 'xtal-element/lib/applyMixins.js';
-import { DefineArgs, HasUpon, PropInfo } from './types.d.js';
+import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue } from './types.d.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
 export { html } from 'xtal-element/lib/html.js';
 export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
+
+
 
 export function define<T = any>(args: DefineArgs<T>){
     const c = args.config;
@@ -39,19 +41,56 @@ export function define<T = any>(args: DefineArgs<T>){
         }
         connectedCallback(){
             //TODO merge attributes?
+            this.attachQR();
             propUp(this, Object.keys(props), {...args.config.initPropMerge, ...args.initComplexPropMerge});
+            this.detachQR();
             if(c.initMethod !== undefined){
                 (<any>this)[c.initMethod](this);
             }
             
         }
-        blockReactions(){
-            //[TODO]
+
+        attachQR(){
+            this.QR = QR;
         }
-        unblockReactions(){
-            //[TODO]
+        detachQR(){
+            delete this.QR;
+            const propChangeQueue = this.propChangeQueue;
+            const actions = c.actions;
+            const actionsToDo = new Set<string>();
+            if(propChangeQueue !== undefined && actions !== undefined){
+                for(const action of actions){
+                    const upon = action.upon;
+                    const doAct = action.do as any;
+                    if(upon === undefined) continue;
+                    switch(typeof upon){
+                        case 'string':
+                            if(propChangeQueue.has(upon)){
+                                actionsToDo.add(doAct);
+                            }
+                            break;
+                        case 'object':
+                            for(const dependency of upon){
+                                if(typeof dependency === 'string'){
+                                    if(propChangeQueue.has(dependency)){
+                                        actionsToDo.add(doAct);
+                                        break;
+                                    }
+                                }
+                                
+                            }
+                            break;
+                    }
+                }
+            }
+            const values = Array.from(actionsToDo);
+            for(const action of values){
+                (<any>this)[action](this);
+            }
+            delete this.propChangeQueue;
         }
     }
+    interface newClass extends HasPropChangeQueue{}
     const mixins = args.mixins;
     if(mixins !== undefined){
         applyMixins(newClass, mixins);
@@ -60,6 +99,8 @@ export function define<T = any>(args: DefineArgs<T>){
     def(newClass);
     return newClass;
 }
+
+
 
 export function accProps<T = any>(args: DefineArgs<T>){
     const props: {[key: string]: PropInfo} = {};
@@ -178,6 +219,10 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
             set(nv){
                 if(prop.dry && this[privateKey] === nv) return;
                 this[privateKey] = nv;
+                if(this.QR){
+                    this.QR(key, this);
+                    return;
+                }
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
                         const andIf = x.biff;
@@ -207,6 +252,14 @@ export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {
             configurable: true,
         });
     }
+}
+
+
+
+
+const QR = (propName: string, self: HasPropChangeQueue){
+    if(self.propChangeQueue === undefined) self.propChangeQueue = new Set<string>();
+    self.propChangeQueue.add(propName);
 }
 
 

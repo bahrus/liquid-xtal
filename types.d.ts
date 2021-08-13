@@ -46,3 +46,7 @@ export interface PropInfo{
 
 export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo | any[];
 
+export interface HasPropChangeQueue{
+    propChangeQueue: Set<string> | undefined;
+    QR: undefined | ((name: string, self: HasPropChangeQueue) => void);
+}

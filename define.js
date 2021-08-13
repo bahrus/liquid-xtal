@@ -36,16 +36,51 @@ export function define(args) {
         }
         connectedCallback() {
             //TODO merge attributes?
+            this.attachQR();
             propUp(this, Object.keys(props), { ...args.config.initPropMerge, ...args.initComplexPropMerge });
+            this.detachQR();
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);
             }
         }
-        blockReactions() {
-            //[TODO]
+        attachQR() {
+            this.QR = QR;
         }
-        unblockReactions() {
-            //[TODO]
+        detachQR() {
+            delete this.QR;
+            const propChangeQueue = this.propChangeQueue;
+            const actions = c.actions;
+            const actionsToDo = new Set();
+            if (propChangeQueue !== undefined && actions !== undefined) {
+                for (const action of actions) {
+                    const upon = action.upon;
+                    const doAct = action.do;
+                    if (upon === undefined)
+                        continue;
+                    switch (typeof upon) {
+                        case 'string':
+                            if (propChangeQueue.has(upon)) {
+                                actionsToDo.add(doAct);
+                            }
+                            break;
+                        case 'object':
+                            for (const dependency of upon) {
+                                if (typeof dependency === 'string') {
+                                    if (propChangeQueue.has(dependency)) {
+                                        actionsToDo.add(doAct);
+                                        break;
+                                    }
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+            const values = Array.from(actionsToDo);
+            for (const action of values) {
+                this[action](this);
+            }
+            delete this.propChangeQueue;
         }
     }
     newClass.is = c.tagName;
@@ -168,6 +203,10 @@ export function addPropsToClass(newClass, props, args) {
                 if (prop.dry && this[privateKey] === nv)
                     return;
                 this[privateKey] = nv;
+                if (this.QR) {
+                    this.QR(key, this);
+                    return;
+                }
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
                         const andIf = x.biff;
@@ -198,3 +237,8 @@ export function addPropsToClass(newClass, props, args) {
         });
     }
 }
+const QR = (propName, self) => {
+    if (self.propChangeQueue === undefined)
+        self.propChangeQueue = new Set();
+    self.propChangeQueue.add(propName);
+};
