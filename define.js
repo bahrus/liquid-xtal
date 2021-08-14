@@ -58,9 +58,11 @@ export function define(args) {
             const actionsToDo = new Set();
             if (propChangeQueue !== undefined && actions !== undefined) {
                 for (const action of actions) {
-                    const upon = action.upon;
+                    const { upon } = action;
                     const doAct = action.do;
                     if (upon === undefined)
+                        continue;
+                    if (!checkRifs(action, this))
                         continue;
                     switch (typeof upon) {
                         case 'string':
@@ -134,7 +136,7 @@ function insertProps(hasUpons, props, args) {
         return;
     const defaults = { ...args.initComplexPropMerge, ...args.config.initPropMerge };
     for (const hasUpon of hasUpons) {
-        const upon = hasUpon.upon;
+        const { upon } = hasUpon;
         switch (typeof upon) {
             case 'string':
                 if (props[upon] === undefined) {
@@ -204,20 +206,8 @@ function addPropsToClass(newClass, props, args) {
                 }
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
-                        const refrainIfFalsy = x.riff;
-                        if (refrainIfFalsy !== undefined) {
-                            for (const key of refrainIfFalsy) {
-                                if (!this[key])
-                                    return false;
-                            }
-                        }
-                        const refrainIfTruthy = x.rift;
-                        if (refrainIfTruthy !== undefined) {
-                            for (const key of refrainIfTruthy) {
-                                if (this[key])
-                                    return false;
-                            }
-                        }
+                        if (!checkRifs(x, this))
+                            return false;
                         const upon = x.upon;
                         switch (typeof upon) {
                             case 'string':
@@ -238,6 +228,22 @@ function addPropsToClass(newClass, props, args) {
             configurable: true,
         });
     }
+}
+function checkRifs(action, self) {
+    const { riff, rift } = action;
+    if (riff !== undefined) {
+        for (const key of riff) {
+            if (!self[key])
+                return false;
+        }
+    }
+    if (rift !== undefined) {
+        for (const key of rift) {
+            if (self[key])
+                return false;
+        }
+    }
+    return true;
 }
 const QR = (propName, self) => {
     if (self.propChangeQueue === undefined)

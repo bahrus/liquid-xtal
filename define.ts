@@ -1,6 +1,6 @@
 import { define as def } from 'xtal-element/lib/define.js';
 import { applyMixins } from 'xtal-element/lib/applyMixins.js';
-import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue } from './types.d.js';
+import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue, Action } from './types.d.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
@@ -65,9 +65,10 @@ export function define<T = any>(args: DefineArgs<T>){
             const actionsToDo = new Set<string>();
             if(propChangeQueue !== undefined && actions !== undefined){
                 for(const action of actions){
-                    const upon = action.upon;
+                    const {upon} = action;
                     const doAct = action.do as any;
                     if(upon === undefined) continue;
+                    if(!checkRifs(action, this)) continue;
                     switch(typeof upon){
                         case 'string':
                             if(propChangeQueue.has(upon)){
@@ -146,7 +147,7 @@ function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: Pro
     if(hasUpons === undefined) return;
     const defaults = {...args.initComplexPropMerge, ...args.config.initPropMerge};
     for(const hasUpon of hasUpons){
-        const upon = hasUpon.upon;
+        const {upon} = hasUpon;
         switch(typeof upon){
             case 'string':
                 if(props[upon] === undefined){
@@ -220,18 +221,7 @@ function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): 
                 }
                 if(actions !== undefined){
                     const filteredActions = actions.filter(x => {
-                        const refrainIfFalsy = x.riff;
-                        if(refrainIfFalsy !== undefined){
-                            for(const key of refrainIfFalsy){
-                                if(!this[key]) return false;
-                            }
-                        }
-                        const refrainIfTruthy = x.rift;
-                        if(refrainIfTruthy !== undefined){
-                            for(const key of refrainIfTruthy){
-                                if(this[key]) return false;
-                            }
-                        }
+                        if(!checkRifs(x, this)) return false;
                         const upon = x.upon;
                         switch(typeof upon){
                             case 'string':
@@ -254,7 +244,20 @@ function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): 
     }
 }
 
-
+function checkRifs(action: Action<any>, self: any){
+    const {riff, rift} = action;
+    if(riff !== undefined){
+        for(const key of riff){
+            if(!self[key]) return false;
+        }
+    }
+    if(rift !== undefined){
+        for(const key of rift){
+            if(self[key]) return false;
+        }
+    }
+    return true;
+}
 
 
 const QR = (propName: string, self: HasPropChangeQueue) => {
