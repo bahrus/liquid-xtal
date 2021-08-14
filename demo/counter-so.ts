@@ -56,7 +56,7 @@ define<CounterSo>({
     initComplexPropMerge:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmt, {
+    mixins: [...TemplMgmt.Mixins, {
         changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
     }],
 });

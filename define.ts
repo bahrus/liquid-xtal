@@ -5,7 +5,7 @@ import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
 export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
-
+export {Action, PropInfo} from './types.d.js';
 
 
 export function define<T = any>(args: DefineArgs<T>){

@@ -50,7 +50,7 @@ define({
     initComplexPropMerge: {
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmt, {
+    mixins: [...TemplMgmt.Mixins, {
             changeCount: (self, d, e) => self.count += d,
         }],
 });

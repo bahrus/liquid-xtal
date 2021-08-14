@@ -23,13 +23,5 @@ export class TemplMgmt extends TemplMgmtBase {
             options: self.renderOptions,
         };
     }
-    doInitTransform(self) {
-        super.doInitTransform(self);
-    }
-    doUpdateTransform(self) {
-        super.doUpdateTransform(self);
-    }
-    cloneTemplate(self) {
-        super.cloneTemplate(self);
-    }
 }
+TemplMgmt.Mixins = [TemplMgmtBase, TemplMgmt];

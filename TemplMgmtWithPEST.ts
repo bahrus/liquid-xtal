@@ -25,15 +25,5 @@ export class TemplMgmt extends TemplMgmtBase{
             options: self.renderOptions,
         };
     }
-    doInitTransform(self: TemplMgmtBase){
-        super.doInitTransform(self);
-    }
-
-    doUpdateTransform(self: TemplMgmtBase){
-        super.doUpdateTransform(self);
-    }
-
-    cloneTemplate(self: TemplMgmtBase){
-        super.cloneTemplate(self);
-    }
+    static Mixins: any = [TemplMgmtBase, TemplMgmt];
 }
