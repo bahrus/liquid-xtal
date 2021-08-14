@@ -194,6 +194,7 @@ function addPropsToClass(newClass, props, args) {
                 return this[privateKey];
             },
             set(nv) {
+                const ov = this[privateKey];
                 if (prop.dry && this[privateKey] === nv)
                     return;
                 this[privateKey] = nv;
@@ -229,7 +230,7 @@ function addPropsToClass(newClass, props, args) {
                         const fn = this[action.do];
                         if (fn === undefined)
                             throw (action.do.toString() + " undefined");
-                        this[action.do](this);
+                        this[action.do](this, key, ov, nv);
                     }
                 }
             },
