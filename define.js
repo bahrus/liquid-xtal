@@ -184,16 +184,9 @@ export function insertProps(hasUpons, props, args) {
         }
     }
 }
-// function setDefVal(defaults: any, key: string, prop: PropInfo){
-//     const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
-//     if(nonSerializableDefault !== undefined){
-//         prop.default = nonSerializableDefault;
-//     }
-// }
 export function addPropsToClass(newClass, props, args) {
     const proto = newClass.prototype;
     const actions = args.config.actions;
-    //const transforms = args.config.transforms;
     for (const key in props) {
         const prop = props[key];
         const privateKey = '_' + key;

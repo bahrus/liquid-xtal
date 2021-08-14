@@ -200,17 +200,10 @@ export function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: strin
     }
 }
 
-// function setDefVal(defaults: any, key: string, prop: PropInfo){
-//     const nonSerializableDefault = defaults !== undefined ? defaults[key] : undefined;
-//     if(nonSerializableDefault !== undefined){
-//         prop.default = nonSerializableDefault;
-//     }
-// }
 
 export function addPropsToClass<T extends HTMLElement = HTMLElement>(newClass: {new(): T}, props: {[key: string]: PropInfo}, args: DefineArgs){
     const proto = newClass.prototype;
     const actions = args.config.actions;
-    //const transforms = args.config.transforms;
     for(const key in props){
         const prop = props[key];
         const privateKey = '_' + key;
