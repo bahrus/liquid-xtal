@@ -12,19 +12,20 @@ export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
     initPropMerge?: Partial<TMixinComposite>;
-    //transforms?: Transform<TMixinComposite>[];
     actions?: Action<TMixinComposite>[];
-    //queue if truthy
-    quit?: keyof TMixinComposite[]; //TODO
+
 }
 
 export interface HasUpon<TMixinComposite = any>{
     upon?: keyof TMixinComposite | StringOrPropInfo[];
     /**
-     * block if falsy
+     * refrain if falsy
      */
-    biff?: (keyof TMixinComposite & string)[];
-    //blocking?: (keyof TMixinComposite & string)[];
+    riff?: (keyof TMixinComposite & string)[];
+    /**
+     * refrain if truthy
+     */
+    rift?: (keyof TMixinComposite & string)[];
     dry?: boolean,
 }
 

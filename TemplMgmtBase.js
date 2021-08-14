@@ -27,11 +27,11 @@ TemplMgmtBase.doInitTransform = [
     },
     {
         upon: ['clonedTemplate', 'initTransform'],
-        biff: ['clonedTemplate', 'initTransform'],
+        riff: ['clonedTemplate', 'initTransform'],
         do: 'doInitTransform'
     }
 ];
 TemplMgmtBase.doUpdateTransform = {
-    biff: ['updateTransform'],
+    riff: ['updateTransform'],
     do: 'doUpdateTransform',
 };

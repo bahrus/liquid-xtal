@@ -204,14 +204,21 @@ export function addPropsToClass(newClass, props, args) {
                 }
                 if (actions !== undefined) {
                     const filteredActions = actions.filter(x => {
-                        const andIf = x.biff;
-                        const upon = x.upon;
-                        if (andIf !== undefined) {
-                            for (const key of andIf) {
+                        const refrainIfFalsy = x.riff;
+                        if (refrainIfFalsy !== undefined) {
+                            for (const key of refrainIfFalsy) {
                                 if (!this[key])
                                     return false;
                             }
                         }
+                        const refrainIfTruthy = x.rift;
+                        if (refrainIfTruthy !== undefined) {
+                            for (const key of refrainIfTruthy) {
+                                if (this[key])
+                                    return false;
+                            }
+                        }
+                        const upon = x.upon;
                         switch (typeof upon) {
                             case 'string':
                                 return upon === key;

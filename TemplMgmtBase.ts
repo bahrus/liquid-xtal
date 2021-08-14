@@ -42,14 +42,14 @@ export abstract class TemplMgmtBase extends HTMLElement{
         },
         {
             upon: ['clonedTemplate', 'initTransform'],
-            biff: ['clonedTemplate', 'initTransform'],
+            riff: ['clonedTemplate', 'initTransform'],
             do: 'doInitTransform'
         }
     ];
 
     static doUpdateTransform: Action<TemplMgmtBase> = {
         
-        biff: ['updateTransform'],
+        riff: ['updateTransform'],
         do: 'doUpdateTransform',
     };
 }
