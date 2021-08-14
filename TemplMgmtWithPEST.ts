@@ -1,7 +1,8 @@
 import {TemplMgmtBase, transform} from './TemplMgmtBase.js';
 import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
-export { define, html } from './define.js';
+export { define} from './define.js';
+export { html } from 'xtal-element/lib/html.js';
 
 export class TemplMgmt extends TemplMgmtBase{
 

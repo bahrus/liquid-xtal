@@ -3,7 +3,6 @@ import { applyMixins } from 'xtal-element/lib/applyMixins.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
-export { html } from 'xtal-element/lib/html.js';
 export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 export function define(args) {
     const c = args.config;
@@ -99,13 +98,13 @@ export function define(args) {
     def(newClass);
     return newClass;
 }
-export function accProps(args) {
+function accProps(args) {
     const props = {};
     insertProps(args.config.actions, props, args);
     //insertProps(args.config.transforms, props);
     return props;
 }
-export function getAttributeNames(props) {
+function getAttributeNames(props) {
     const returnArr = [];
     for (const key in props) {
         const prop = props[key];
@@ -130,7 +129,7 @@ const defaultProp = {
     type: 'Object',
     dry: true,
 };
-export function insertProps(hasUpons, props, args) {
+function insertProps(hasUpons, props, args) {
     if (hasUpons === undefined)
         return;
     const defaults = { ...args.initComplexPropMerge, ...args.config.initPropMerge };
@@ -184,7 +183,7 @@ export function insertProps(hasUpons, props, args) {
         }
     }
 }
-export function addPropsToClass(newClass, props, args) {
+function addPropsToClass(newClass, props, args) {
     const proto = newClass.prototype;
     const actions = args.config.actions;
     for (const key in props) {
