@@ -22,13 +22,13 @@ export class TemplMgmt extends TemplMgmtBase {
             options: self.renderOptions,
         };
     }
-    BF7Uef8Chxn9FRxQ(self) {
-        super.BF7Uef8Chxn9FRxQ(self);
+    doInitTransform(self) {
+        super.doInitTransform(self);
     }
-    EkRpFHI6U0iNctt0kOM(self) {
-        super.EkRpFHI6U0iNctt0kOM(self);
+    doUpdateTransform(self) {
+        super.doUpdateTransform(self);
     }
-    qHHrvPmMyE2mcufi1fpfZQ(self) {
-        super.qHHrvPmMyE2mcufi1fpfZQ(self);
+    cloneTemplate(self) {
+        super.cloneTemplate(self);
     }
 }

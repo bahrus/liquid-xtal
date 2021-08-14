@@ -10,7 +10,7 @@ export { transform } from 'trans-render/lib/transform.js';
 
 export abstract class TemplMgmtBase extends HTMLElement{
     __ctx: RenderContext | undefined;
-    qHHrvPmMyE2mcufi1fpfZQ(self: TemplMgmtBase){
+    cloneTemplate(self: TemplMgmtBase){
         if(self.shadowRoot === null && !self.noshadow){
             self.attachShadow({mode: 'open'});
         }
@@ -21,16 +21,15 @@ export abstract class TemplMgmtBase extends HTMLElement{
 
     abstract loadPlugins(self: TemplMgmtBase): void;
 
-    //do init transform
-    BF7Uef8Chxn9FRxQ(self: TemplMgmtBase): void{
+    doInitTransform(self: TemplMgmtBase): void{
         this.loadPlugins(self);
         transform(self.clonedTemplate as DocumentFragment, self.__ctx!);
         const root = self.noshadow ? self : self.shadowRoot!;
-        root.appendChild(self.clonedTemplate);
+        root.appendChild(self.clonedTemplate!);
+        delete self.clonedTemplate;
     }
 
-    //do update transform
-    EkRpFHI6U0iNctt0kOM(self: TemplMgmtBase){
+    doUpdateTransform(self: TemplMgmtBase){
         this.__ctx!.match = self.updateTransform;
         const root = self.noshadow ? self : self.shadowRoot!;
         transform(root, this.__ctx!);
@@ -39,25 +38,25 @@ export abstract class TemplMgmtBase extends HTMLElement{
     static doInitTransform : Action<TemplMgmtBase>[] = [
         {
             upon: ['mainTemplate', 'noshadow'],
-            do: 'qHHrvPmMyE2mcufi1fpfZQ'
+            do: 'cloneTemplate'
         },
         {
             upon: ['clonedTemplate', 'initTransform'],
             biff: ['clonedTemplate', 'initTransform'],
-            do: 'BF7Uef8Chxn9FRxQ'
+            do: 'doInitTransform'
         }
     ];
 
     static doUpdateTransform: Action<TemplMgmtBase> = {
         
         biff: ['updateTransform'],
-        do: 'EkRpFHI6U0iNctt0kOM',
+        do: 'doUpdateTransform',
     };
 }
 
 export interface TemplMgmtBase{
     mainTemplate: HTMLTemplateElement;
-    clonedTemplate: Node;
+    clonedTemplate: Node | undefined;
     initTransform: any;
     updateTransform: any;
     noshadow: boolean;

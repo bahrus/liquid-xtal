@@ -24,15 +24,15 @@ export class TemplMgmt extends TemplMgmtBase{
             options: self.renderOptions,
         };
     }
-    BF7Uef8Chxn9FRxQ(self: TemplMgmtBase){
-        super.BF7Uef8Chxn9FRxQ(self);
+    doInitTransform(self: TemplMgmtBase){
+        super.doInitTransform(self);
     }
 
-    EkRpFHI6U0iNctt0kOM(self: TemplMgmtBase){
-        super.EkRpFHI6U0iNctt0kOM(self);
+    doUpdateTransform(self: TemplMgmtBase){
+        super.doUpdateTransform(self);
     }
 
-    qHHrvPmMyE2mcufi1fpfZQ(self: TemplMgmtBase){
-        super.qHHrvPmMyE2mcufi1fpfZQ(self);
+    cloneTemplate(self: TemplMgmtBase){
+        super.cloneTemplate(self);
     }
 }
