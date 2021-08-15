@@ -16,6 +16,8 @@ export function define(args) {
         }
     }
     class newClass extends ext {
+        static is = c.tagName;
+        static observedAttributes = getAttributeNames(props);
         attributeChangedCallback(n, ov, nv) {
             const propName = lispToCamel(n);
             const prop = props[propName];
@@ -98,8 +100,6 @@ export function define(args) {
             delete this.propChangeQueue;
         }
     }
-    newClass.is = c.tagName;
-    newClass.observedAttributes = getAttributeNames(props);
     if (mixins !== undefined) {
         const proto = newClass.prototype;
         for (const mix of mixins) {
@@ -110,6 +110,7 @@ export function define(args) {
     }
     addPropsToClass(newClass, props, args);
     def(newClass);
+    return newClass;
 }
 function accProps(args) {
     const props = {};

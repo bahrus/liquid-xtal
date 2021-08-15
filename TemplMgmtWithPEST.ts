@@ -7,7 +7,7 @@ import {doInitTransform, doUpdateTransform, } from './TemplMgmtBase.js';
 
 export { TemplMgmtBase }  from './TemplMgmtBase.js'; 
 
-const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
+const TemplMgmtMixin = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
     loadPlugins(self: TemplMgmt){
         self.__ctx = {
             match: self.initTransform,

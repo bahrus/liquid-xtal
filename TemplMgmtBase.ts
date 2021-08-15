@@ -3,7 +3,7 @@ import { Action,  } from './types.js';
 import { RenderContext, RenderOptions } from 'trans-render/lib/types.d.js';
 export { transform } from 'trans-render/lib/transform.js';
 
-export const TemplMgmtBaseMixin: any = (superclass: {new(): TemplMgmtBase} )  => class extends superclass{
+export const TemplMgmtBaseMixin = (superclass: {new(): TemplMgmtBase} )  => class extends superclass{
     __ctx: RenderContext | undefined;
     cloneTemplate(self: TemplMgmtBase){
         if(self.shadowRoot === null && !self.noshadow){

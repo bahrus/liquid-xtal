@@ -7,7 +7,7 @@ export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 export { Action, PropInfo } from './types.d.js';
 
 
-export function define<T = any>(args: DefineArgs<T>){
+export function define<T = any>(args: DefineArgs<T>): {new(): T}{
     const c = args.config;
     const props  = accProps(args);
     let ext = HTMLElement;
@@ -119,6 +119,7 @@ export function define<T = any>(args: DefineArgs<T>){
     interface newClass extends HasPropChangeQueue{}
     addPropsToClass(newClass, props, args);
     def(newClass);
+    return newClass as any as {new(): T};
 }
 
 
