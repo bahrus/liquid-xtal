@@ -10,7 +10,9 @@ export function define(args) {
     const mixins = args.mixins;
     if (mixins !== undefined) {
         for (const mix of mixins) {
-            ext = mix(ext);
+            if (typeof mix === 'function') {
+                ext = mix(ext);
+            }
         }
     }
     class newClass extends ext {
@@ -98,6 +100,14 @@ export function define(args) {
     }
     newClass.is = c.tagName;
     newClass.observedAttributes = getAttributeNames(props);
+    if (mixins !== undefined) {
+        const proto = newClass.prototype;
+        for (const mix of mixins) {
+            if (typeof mix === 'object') {
+                Object.assign(proto, mix);
+            }
+        }
+    }
     addPropsToClass(newClass, props, args);
     def(newClass);
 }

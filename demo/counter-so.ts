@@ -28,9 +28,6 @@ const mainTemplate = html`
 </style>
 `;
 
-const CounterSoMixin = (superclass: any) => class extends superclass{
-    changeCount = (self: CounterSo, d: number, e: Event) => self.count += d;
-}
 
 define<CounterSo>({
     //config should be JSON serializable, importable via JSON import
@@ -60,6 +57,8 @@ define<CounterSo>({
     initComplexPropMerge:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmtMixin, CounterSoMixin],
+    mixins: [TemplMgmtMixin, {
+        changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
+    }],
 });
 

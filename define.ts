@@ -4,7 +4,7 @@ import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
 export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
-export {Action, PropInfo} from './types.d.js';
+export { Action, PropInfo } from './types.d.js';
 
 
 export function define<T = any>(args: DefineArgs<T>){
@@ -14,7 +14,10 @@ export function define<T = any>(args: DefineArgs<T>){
     const mixins = args.mixins;
     if(mixins !== undefined){
         for(const mix of mixins){
-            ext = mix(ext);
+            if(typeof mix === 'function'){
+                ext = mix(ext);
+            }
+            
         }
     }
     
@@ -102,6 +105,15 @@ export function define<T = any>(args: DefineArgs<T>){
                 (<any>this)[action](this);
             }
             delete this.propChangeQueue;
+        }
+    }
+    if(mixins !== undefined){
+        const proto = newClass.prototype;
+        for(const mix of mixins){
+            if(typeof mix === 'object'){
+                Object.assign(proto, mix);
+            }
+            
         }
     }
     interface newClass extends HasPropChangeQueue{}
