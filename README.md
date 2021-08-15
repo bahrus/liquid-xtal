@@ -1,13 +1,13 @@
 # liquid-xtal
 
 ```TypeScript
-import {TemplMgmt, define, html} from '../TemplMgmtWithPEST.js';
+import {tm, TemplMgmtBase} from '../TemplMgmtWithPEST.js';
 
-export interface CounterSo extends TemplMgmt {
+export interface CounterSo extends  TemplMgmtBase{
     count: number;
 }
 
-const mainTemplate = html`
+const mainTemplate = tm.html`
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
     * {
@@ -31,7 +31,8 @@ const mainTemplate = html`
 </style>
 `;
 
-define<CounterSo>({
+
+tm.define<CounterSo>({
     //config should be JSON serializable, importable via JSON import
     config:  {
         tagName:'counter-so',
@@ -48,10 +49,10 @@ define<CounterSo>({
             },
         },
         actions: [
-            ...TemplMgmt.doInitTransform,
+            ...tm.doInitTransform,
             {
                 upon: ['count', 'updateTransform'],
-                ...TemplMgmt.doUpdateTransform
+                ...tm.doUpdateTransform
             }
         ],
     },
@@ -59,8 +60,9 @@ define<CounterSo>({
     initComplexPropMerge:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmt, {
+    mixins: [tm.TemplMgmtMixin, {
         changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
     }],
 });
+
 ```
