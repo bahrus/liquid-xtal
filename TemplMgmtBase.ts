@@ -8,7 +8,7 @@ export { transform } from 'trans-render/lib/transform.js';
 
 
 
-export const TemplMgmtBaseMixin: any = (superclass: any)  => class TemplMgmtBase extends superclass{
+export const TemplMgmtBaseMixin: any = (superclass: {new(): TemplMgmtBase2} )  => class TemplMgmtBase extends superclass{
     __ctx: RenderContext | undefined;
     cloneTemplate(self: TemplMgmtBase){
         if(self.shadowRoot === null && !self.noshadow){
@@ -38,6 +38,8 @@ export const TemplMgmtBaseMixin: any = (superclass: any)  => class TemplMgmtBase
 
 }
 
+interface TemplMgmtBase extends TemplMgmtBase2{}
+
 export const  doInitTransform : Action<TemplMgmtBase>[] = [
     {
         upon: ['mainTemplate', 'noshadow'],
@@ -56,7 +58,7 @@ export const doUpdateTransform: Action<TemplMgmtBase> = {
     do: 'doUpdateTransform',
 };
 
-export interface TemplMgmtBase{
+export interface TemplMgmtBase2 extends HTMLElement{
     mainTemplate: HTMLTemplateElement;
     clonedTemplate: Node | undefined;
     initTransform: any;
