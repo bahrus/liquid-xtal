@@ -18,7 +18,7 @@ export const TemplMgmtBaseMixin: any = (superclass: {new(): TemplMgmtBase} )  =>
 
     doInitTransform(self: TemplMgmtBase): void{
         this.loadPlugins(self);
-        transform(self.clonedTemplate as DocumentFragment, self.__ctx!);
+        transform(self.clonedTemplate as DocumentFragment, this.__ctx!);
         const root = self.noshadow ? self : self.shadowRoot!;
         root.appendChild(self.clonedTemplate!);
         delete self.clonedTemplate;

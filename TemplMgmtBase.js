@@ -10,7 +10,7 @@ export const TemplMgmtBaseMixin = (superclass) => class extends superclass {
     loadPlugins(self) { }
     doInitTransform(self) {
         this.loadPlugins(self);
-        transform(self.clonedTemplate, self.__ctx);
+        transform(self.clonedTemplate, this.__ctx);
         const root = self.noshadow ? self : self.shadowRoot;
         root.appendChild(self.clonedTemplate);
         delete self.clonedTemplate;
