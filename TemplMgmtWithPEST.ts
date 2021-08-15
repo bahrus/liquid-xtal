@@ -1,11 +1,13 @@
 import { TemplMgmtBaseMixin } from './TemplMgmtBase.js';
 import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
-export { define} from './define.js';
-export { html } from 'xtal-element/lib/html.js';
-export {doInitTransform, doUpdateTransform, TemplMgmtBase} from './TemplMgmtBase.js'; 
+import { define} from './define.js';
+import { html } from 'xtal-element/lib/html.js';
+import {doInitTransform, doUpdateTransform, } from './TemplMgmtBase.js'; 
 
-export const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
+export { TemplMgmtBase }  from './TemplMgmtBase.js'; 
+
+const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
     loadPlugins(self: TemplMgmt){
         self.__ctx = {
             match: self.initTransform,
@@ -26,3 +28,11 @@ export const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends 
         };
     }
 }
+
+export const tm = {
+    doInitTransform,
+    doUpdateTransform,
+    define,
+    html,
+    TemplMgmtMixin
+};

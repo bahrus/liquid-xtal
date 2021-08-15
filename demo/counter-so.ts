@@ -1,10 +1,10 @@
-import {TemplMgmtMixin, define, html, TemplMgmtBase, doUpdateTransform, doInitTransform} from '../TemplMgmtWithPEST.js';
+import {tm, TemplMgmtBase} from '../TemplMgmtWithPEST.js';
 
 export interface CounterSo extends  TemplMgmtBase{
     count: number;
 }
 
-const mainTemplate = html`
+const mainTemplate = tm.html`
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
     * {
@@ -29,7 +29,7 @@ const mainTemplate = html`
 `;
 
 
-define<CounterSo>({
+tm.define<CounterSo>({
     //config should be JSON serializable, importable via JSON import
     config:  {
         tagName:'counter-so',
@@ -46,10 +46,10 @@ define<CounterSo>({
             },
         },
         actions: [
-            ...doInitTransform,
+            ...tm.doInitTransform,
             {
                 upon: ['count', 'updateTransform'],
-                ...doUpdateTransform
+                ...tm.doUpdateTransform
             }
         ],
     },
@@ -57,7 +57,7 @@ define<CounterSo>({
     initComplexPropMerge:{
         mainTemplate: mainTemplate
     },
-    mixins: [TemplMgmtMixin, {
+    mixins: [tm.TemplMgmtMixin, {
         changeCount: (self: CounterSo, d: number, e: Event) => self.count += d,
     }],
 });
