@@ -6,8 +6,7 @@ export { html } from 'xtal-element/lib/html.js';
 export {TemplMgmtBase, doInitTransform, doUpdateTransform} from './TemplMgmtBase.js'; 
 
 export const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
-
-    loadPlugins(self: TemplMgmtBase){
+    loadPlugins(self: TemplMgmt){
         self.__ctx = {
             match: self.initTransform,
             host: self,
@@ -26,5 +25,4 @@ export const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends 
             options: self.renderOptions,
         };
     }
-    //static Mixins: any = [TemplMgmtBase, TemplMgmt];
 }

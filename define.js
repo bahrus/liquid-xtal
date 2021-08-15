@@ -7,9 +7,9 @@ export function define(args) {
     const c = args.config;
     const props = accProps(args);
     let ext = HTMLElement;
-    const mixins2 = args.mixins;
-    if (mixins2 !== undefined) {
-        for (const mix of mixins2) {
+    const mixins = args.mixins;
+    if (mixins !== undefined) {
+        for (const mix of mixins) {
             ext = mix(ext);
         }
     }
@@ -96,25 +96,14 @@ export function define(args) {
             delete this.propChangeQueue;
         }
     }
-    // constructor(){
-    //     super();
-    // }
     newClass.is = c.tagName;
     newClass.observedAttributes = getAttributeNames(props);
-    // const mixins = args.mixins || [];
-    // if(mixins !== undefined){
-    //     applyMixins(newClass, mixins);
-    // }
-    // class newNewClass extends mix(newClass).with(mixins){}
     addPropsToClass(newClass, props, args);
-    // def(newNewClass);
-    // return newNewClass;
     def(newClass);
 }
 function accProps(args) {
     const props = {};
     insertProps(args.config.actions, props, args);
-    //insertProps(args.config.transforms, props);
     return props;
 }
 function getAttributeNames(props) {

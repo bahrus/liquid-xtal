@@ -12,17 +12,15 @@ export function define<T = any>(args: DefineArgs<T>){
     const c = args.config;
     const props  = accProps(args);
     let ext = HTMLElement;
-    const mixins2 = args.mixins;
-    if(mixins2 !== undefined){
-        for(const mix of mixins2){
+    const mixins = args.mixins;
+    if(mixins !== undefined){
+        for(const mix of mixins){
             ext = mix(ext);
         }
     }
     
     class newClass extends ext{
-        // constructor(){
-        //     super();
-        // }
+
         static is = c.tagName;
         static observedAttributes = getAttributeNames(props);
         attributeChangedCallback(n: string, ov: string, nv: string){
@@ -108,14 +106,7 @@ export function define<T = any>(args: DefineArgs<T>){
         }
     }
     interface newClass extends HasPropChangeQueue{}
-    // const mixins = args.mixins || [];
-    // if(mixins !== undefined){
-    //     applyMixins(newClass, mixins);
-    // }
-    // class newNewClass extends mix(newClass).with(mixins){}
     addPropsToClass(newClass, props, args);
-    // def(newNewClass);
-    // return newNewClass;
     def(newClass);
 }
 
@@ -125,7 +116,6 @@ function accProps<T = any>(args: DefineArgs<T>){
     const props: {[key: string]: PropInfo} = {};
     
     insertProps(args.config.actions, props, args);
-    //insertProps(args.config.transforms, props);
     return props;
 }
 
