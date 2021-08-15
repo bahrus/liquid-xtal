@@ -1,5 +1,4 @@
 import { define as def } from 'xtal-element/lib/define.js';
-import { applyMixins } from 'xtal-element/lib/applyMixins.js';
 import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue, Action } from './types.d.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';

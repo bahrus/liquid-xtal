@@ -29,7 +29,6 @@ const mainTemplate = html`
 `;
 
 const CounterSoMixin = (superclass: any) => class extends superclass{
-
     changeCount = (self: CounterSo, d: number, e: Event) => self.count += d;
 }
 

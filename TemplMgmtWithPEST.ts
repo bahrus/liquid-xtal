@@ -3,7 +3,7 @@ import { PE } from 'trans-render/lib/PE.js';
 import { SplitText } from 'trans-render/lib/SplitText.js';
 export { define} from './define.js';
 export { html } from 'xtal-element/lib/html.js';
-export {doInitTransform, doUpdateTransform} from './TemplMgmtBase.js'; 
+export {doInitTransform, doUpdateTransform, TemplMgmtBase} from './TemplMgmtBase.js'; 
 
 export const TemplMgmtMixin: any = (superclass: any) => class TemplMgmt extends TemplMgmtBaseMixin(superclass){
     loadPlugins(self: TemplMgmt){
