@@ -3,7 +3,7 @@ export interface DefineArgs<TMixinComposite = any>{
     mixins: any[],
     mainTemplate?: HTMLTemplateElement;
     /** use this only for defaults that can't be JSON serialized in config */
-    initComplexPropMerge?: Partial<TMixinComposite>;
+    complexPropDefaults?: Partial<TMixinComposite>;
     config: WCConfig<TMixinComposite>;
     
 }
@@ -11,22 +11,23 @@ export interface DefineArgs<TMixinComposite = any>{
 export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
-    propDef?: Partial<TMixinComposite>;
+    propDefaults?: Partial<TMixinComposite>;
+    propInfo?: {[key in Extract<keyof TMixinComposite, string>]: PropInfo} 
     actions?: Action<TMixinComposite>[];
-
+    notifyProps?: (keyof TMixinComposite)[];
 }
 
 export interface HasUpon<TMixinComposite = any>{
-    upon?: keyof TMixinComposite | StringOrPropInfo[];
+    upon?: (Extract<keyof TMixinComposite, string>)[];
     /**
      * refrain if falsy
      */
-    riff?: (keyof TMixinComposite & string)[];
+    riff?: (Extract<keyof TMixinComposite, string>)[];
     /**
      * refrain if truthy
      */
-    rift?: (keyof TMixinComposite & string)[];
-    dry?: boolean,
+    rift?: (Extract<keyof TMixinComposite, string>)[];
+    //dry?: boolean,
 }
 
 export interface Transform<TMixinComposite = any> extends HasUpon<TMixinComposite>{
@@ -34,19 +35,20 @@ export interface Transform<TMixinComposite = any> extends HasUpon<TMixinComposit
 }
 
 export interface Action<TMixinComposite = any> extends HasUpon<TMixinComposite>{
-    do: keyof TMixinComposite;
+    do: Extract<keyof TMixinComposite, string>;
 }
 
 export type MatchRHS<TMixinComposite = any> = string;
 
+type PropInfoTypes = "String" | "Number" | "Boolean" | "Object";
 export interface PropInfo{
-    type?: "String" | "Number" | "Boolean" | "Object";
+    type?: PropInfoTypes;
     //default?: any;
     dry?: boolean;
     parse?: boolean;
 }
 
-export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo | any[];
+//export type StringOrPropInfo<TMixinComposite = any> = keyof TMixinComposite | PropInfo | any[];
 
 export interface HasPropChangeQueue{
     propChangeQueue: Set<string> | undefined;

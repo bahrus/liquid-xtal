@@ -1,5 +1,5 @@
 import { define as def } from 'xtal-element/lib/define.js';
-import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue, Action } from './types.d.js';
+import { DefineArgs, HasUpon, PropInfo, HasPropChangeQueue, Action, PropInfoTypes } from './types.d.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
@@ -9,7 +9,7 @@ export { Action, PropInfo } from './types.d.js';
 
 export function define<T = any>(args: DefineArgs<T>): {new(): T}{
     const c = args.config;
-    const props  = accProps(args);
+    const propInfos  = createPropInfos(args);
     let ext = HTMLElement;
     const mixins = args.mixins;
     if(mixins !== undefined){
@@ -24,10 +24,10 @@ export function define<T = any>(args: DefineArgs<T>): {new(): T}{
     class newClass extends ext{
 
         static is = c.tagName;
-        static observedAttributes = getAttributeNames(props);
+        static observedAttributes = getAttributeNames(propInfos);
         attributeChangedCallback(n: string, ov: string, nv: string){
             const propName = lispToCamel(n);
-            const prop = props[propName];
+            const prop = propInfos[propName];
             if(prop !== undefined){
                 if(prop.dry && ov === nv) return;
                 const aThis = this as any;
@@ -52,13 +52,11 @@ export function define<T = any>(args: DefineArgs<T>): {new(): T}{
         connectedCallback(){
             //TODO merge attributes?
             this.attachQR();
-            const defaults: any = {...args.config.propDef, ...args.initComplexPropMerge};
+            const defaults: any = {...args.config.propDefaults, ...args.complexPropDefaults};
             for(const key in defaults){
-                if(props[key] === undefined){
-                    (<any>this)[key] = defaults[key];
-                }
+                (<any>this)[key] = defaults[key];
             }
-            propUp(this, Object.keys(props), defaults);
+            propUp(this, Object.keys(propInfos), defaults);
             this.detachQR();
             if(c.initMethod !== undefined){
                 (<any>this)[c.initMethod](this);
@@ -88,13 +86,10 @@ export function define<T = any>(args: DefineArgs<T>): {new(): T}{
                             break;
                         case 'object':
                             for(const dependency of upon){
-                                if(typeof dependency === 'string'){
-                                    if(propChangeQueue.has(dependency)){
-                                        actionsToDo.add(doAct);
-                                        break;
-                                    }
+                                if(propChangeQueue.has(dependency)){
+                                    actionsToDo.add(doAct);
+                                    break;
                                 }
-                                
                             }
                             break;
                     }
@@ -117,19 +112,11 @@ export function define<T = any>(args: DefineArgs<T>): {new(): T}{
         }
     }
     interface newClass extends HasPropChangeQueue{}
-    addPropsToClass(newClass, props, args);
+    addPropsToClass(newClass, propInfos, args);
     def(newClass);
     return newClass as any as {new(): T};
 }
 
-
-
-function accProps<T = any>(args: DefineArgs<T>){
-    const props: {[key: string]: PropInfo} = {};
-    
-    insertProps(args.config.actions, props, args);
-    return props;
-}
 
 function getAttributeNames(props: {[key: string]: PropInfo}){
     const returnArr: string[] = [];
@@ -156,63 +143,50 @@ function getAttributeNames(props: {[key: string]: PropInfo}){
 const defaultProp: PropInfo = {
     type: 'Object',
     dry: true,
+    parse: true,
 };
 
-function insertProps(hasUpons: HasUpon[] | undefined, props: {[key: string]: PropInfo}, args: DefineArgs){
-    if(hasUpons === undefined) return;
-    const defaults = {...args.initComplexPropMerge, ...args.config.propDef};
-    for(const hasUpon of hasUpons){
-        const {upon} = hasUpon;
-        switch(typeof upon){
-            case 'string':
-                if(props[upon] === undefined){
-                    const prop: PropInfo = {...defaultProp};
-                    props[upon] = prop;
-                }
-                break;
-            case 'object':
-                if(Array.isArray(upon)){
-                    let lastProp: PropInfo | undefined;
-                    for(const dependency of upon){
-                        switch(typeof dependency){
-                            case 'string':
-                                if(props[dependency] === undefined){
-                                    const prop: PropInfo = {...defaultProp};
-                                    props[dependency] = prop;
-                                    const defaultVal = defaults[dependency];
-                                    switch(typeof defaultVal){
-                                        case 'string':
-                                            prop.type = 'String';
-                                            break;
-                                        case 'number': 
-                                            prop.type = 'Number';
-                                            break;
-                                        case 'boolean':
-                                            prop.type = 'Number';
-                                            break;
+function setType(prop: PropInfo, val: any){
+    if(val !== undefined){
+        let t: string = typeof(val);
+        t = t[0].toUpperCase() + t.substr(1);
+        prop.type = t as PropInfoTypes;
+    }
+}
 
-
-                                    }
-                                }
-                                lastProp = props[dependency];
-                                break;
-                            case 'object':
-                                if(lastProp !== undefined){
-                                    Object.assign(lastProp, dependency);
-                                }else{
-                                    throw 'Syntax Error';
-                                }
-
-
-                                break;
-                            
-                        }
-                    }
-                }else{
-                    throw 'NI';//Not Implemented
-                }
+function createPropInfos(args: DefineArgs){
+    const props: {[key: string]: PropInfo} = {};
+    const defaults = {...args.complexPropDefaults, ...args.config.propDefaults};
+    for(const key in defaults){
+        const prop: PropInfo = {...defaultProp};
+        setType(prop, defaults[key]);
+        props[key] = prop;
+    }
+    const specialProps = args.config.propInfo;
+    if(specialProps !== undefined){
+        for(const key in specialProps){
+            if(props[key] === undefined){
+                const prop: PropInfo = {...defaultProp};
+                props[key] = prop;
+            }
+            const prop = props[key];
+            Object.assign(prop, specialProps[key]);
         }
     }
+    const actions = args.config.actions;
+    if(actions !== undefined){
+        for(const action of actions){
+            const upon = action.upon;
+            if(upon === undefined) continue;
+            for(const dependency of upon){
+                if(props[dependency] === undefined){
+                    const prop: PropInfo = {...defaultProp};
+                    props[dependency] = prop;
+                }
+            }
+        }
+    }
+    return props;
 }
 
 

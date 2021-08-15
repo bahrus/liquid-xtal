@@ -33,7 +33,7 @@ tm.define<CounterSo>({
     //config should be JSON serializable, importable via JSON import
     config:  {
         tagName:'counter-so',
-        propDef:{
+        propDefaults:{
             initTransform: {
                 buttonElements: [{}, {click:['changeCount', 'dataset.d', 'parseInt']}]
             },
@@ -54,7 +54,7 @@ tm.define<CounterSo>({
         ],
     },
     //This is where non serializable stuff goes
-    initComplexPropMerge:{
+    complexPropDefaults:{
         mainTemplate: mainTemplate
     },
     mixins: [tm.TemplMgmtMixin, {

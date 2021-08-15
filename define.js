@@ -5,7 +5,7 @@ import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
 export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 export function define(args) {
     const c = args.config;
-    const props = accProps(args);
+    const propInfos = createPropInfos(args);
     let ext = HTMLElement;
     const mixins = args.mixins;
     if (mixins !== undefined) {
@@ -18,7 +18,7 @@ export function define(args) {
     class newClass extends ext {
         attributeChangedCallback(n, ov, nv) {
             const propName = lispToCamel(n);
-            const prop = props[propName];
+            const prop = propInfos[propName];
             if (prop !== undefined) {
                 if (prop.dry && ov === nv)
                     return;
@@ -44,13 +44,11 @@ export function define(args) {
         connectedCallback() {
             //TODO merge attributes?
             this.attachQR();
-            const defaults = { ...args.config.propDef, ...args.initComplexPropMerge };
+            const defaults = { ...args.config.propDefaults, ...args.complexPropDefaults };
             for (const key in defaults) {
-                if (props[key] === undefined) {
-                    this[key] = defaults[key];
-                }
+                this[key] = defaults[key];
             }
-            propUp(this, Object.keys(props), defaults);
+            propUp(this, Object.keys(propInfos), defaults);
             this.detachQR();
             if (c.initMethod !== undefined) {
                 this[c.initMethod](this);
@@ -80,11 +78,9 @@ export function define(args) {
                             break;
                         case 'object':
                             for (const dependency of upon) {
-                                if (typeof dependency === 'string') {
-                                    if (propChangeQueue.has(dependency)) {
-                                        actionsToDo.add(doAct);
-                                        break;
-                                    }
+                                if (propChangeQueue.has(dependency)) {
+                                    actionsToDo.add(doAct);
+                                    break;
                                 }
                             }
                             break;
@@ -99,7 +95,7 @@ export function define(args) {
         }
     }
     newClass.is = c.tagName;
-    newClass.observedAttributes = getAttributeNames(props);
+    newClass.observedAttributes = getAttributeNames(propInfos);
     if (mixins !== undefined) {
         const proto = newClass.prototype;
         for (const mix of mixins) {
@@ -108,14 +104,9 @@ export function define(args) {
             }
         }
     }
-    addPropsToClass(newClass, props, args);
+    addPropsToClass(newClass, propInfos, args);
     def(newClass);
     return newClass;
-}
-function accProps(args) {
-    const props = {};
-    insertProps(args.config.actions, props, args);
-    return props;
 }
 function getAttributeNames(props) {
     const returnArr = [];
@@ -141,60 +132,49 @@ function getAttributeNames(props) {
 const defaultProp = {
     type: 'Object',
     dry: true,
+    parse: true,
 };
-function insertProps(hasUpons, props, args) {
-    if (hasUpons === undefined)
-        return;
-    const defaults = { ...args.initComplexPropMerge, ...args.config.propDef };
-    for (const hasUpon of hasUpons) {
-        const { upon } = hasUpon;
-        switch (typeof upon) {
-            case 'string':
-                if (props[upon] === undefined) {
-                    const prop = { ...defaultProp };
-                    props[upon] = prop;
-                }
-                break;
-            case 'object':
-                if (Array.isArray(upon)) {
-                    let lastProp;
-                    for (const dependency of upon) {
-                        switch (typeof dependency) {
-                            case 'string':
-                                if (props[dependency] === undefined) {
-                                    const prop = { ...defaultProp };
-                                    props[dependency] = prop;
-                                    const defaultVal = defaults[dependency];
-                                    switch (typeof defaultVal) {
-                                        case 'string':
-                                            prop.type = 'String';
-                                            break;
-                                        case 'number':
-                                            prop.type = 'Number';
-                                            break;
-                                        case 'boolean':
-                                            prop.type = 'Number';
-                                            break;
-                                    }
-                                }
-                                lastProp = props[dependency];
-                                break;
-                            case 'object':
-                                if (lastProp !== undefined) {
-                                    Object.assign(lastProp, dependency);
-                                }
-                                else {
-                                    throw 'Syntax Error';
-                                }
-                                break;
-                        }
-                    }
-                }
-                else {
-                    throw 'NI'; //Not Implemented
-                }
+function setType(prop, val) {
+    if (val !== undefined) {
+        let t = typeof (val);
+        t = t[0].toUpperCase() + t.substr(1);
+        prop.type = t;
+    }
+}
+function createPropInfos(args) {
+    const props = {};
+    const defaults = { ...args.complexPropDefaults, ...args.config.propDefaults };
+    for (const key in defaults) {
+        const prop = { ...defaultProp };
+        setType(prop, defaults[key]);
+        props[key] = prop;
+    }
+    const specialProps = args.config.propInfo;
+    if (specialProps !== undefined) {
+        for (const key in specialProps) {
+            if (props[key] === undefined) {
+                const prop = { ...defaultProp };
+                props[key] = prop;
+            }
+            const prop = props[key];
+            Object.assign(prop, specialProps[key]);
         }
     }
+    const actions = args.config.actions;
+    if (actions !== undefined) {
+        for (const action of actions) {
+            const upon = action.upon;
+            if (upon === undefined)
+                continue;
+            for (const dependency of upon) {
+                if (props[dependency] === undefined) {
+                    const prop = { ...defaultProp };
+                    props[dependency] = prop;
+                }
+            }
+        }
+    }
+    return props;
 }
 function addPropsToClass(newClass, props, args) {
     const proto = newClass.prototype;
