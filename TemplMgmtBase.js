@@ -1,6 +1,6 @@
 import { transform } from 'trans-render/lib/transform.js';
 export { transform } from 'trans-render/lib/transform.js';
-export const TemplMgmtBaseMixin = (superclass) => class TemplMgmtBase extends superclass {
+export const TemplMgmtBaseMixin = (superclass) => class extends superclass {
     cloneTemplate(self) {
         if (self.shadowRoot === null && !self.noshadow) {
             self.attachShadow({ mode: 'open' });
