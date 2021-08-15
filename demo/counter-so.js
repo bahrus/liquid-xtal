@@ -26,7 +26,7 @@ tm.define({
     //config should be JSON serializable, importable via JSON import
     config: {
         tagName: 'counter-so',
-        initPropMerge: {
+        propDef: {
             initTransform: {
                 buttonElements: [{}, { click: ['changeCount', 'dataset.d', 'parseInt'] }]
             },

@@ -44,7 +44,7 @@ export function define(args) {
         connectedCallback() {
             //TODO merge attributes?
             this.attachQR();
-            const defaults = { ...args.config.initPropMerge, ...args.initComplexPropMerge };
+            const defaults = { ...args.config.propDef, ...args.initComplexPropMerge };
             for (const key in defaults) {
                 if (props[key] === undefined) {
                     this[key] = defaults[key];
@@ -145,7 +145,7 @@ const defaultProp = {
 function insertProps(hasUpons, props, args) {
     if (hasUpons === undefined)
         return;
-    const defaults = { ...args.initComplexPropMerge, ...args.config.initPropMerge };
+    const defaults = { ...args.initComplexPropMerge, ...args.config.propDef };
     for (const hasUpon of hasUpons) {
         const { upon } = hasUpon;
         switch (typeof upon) {

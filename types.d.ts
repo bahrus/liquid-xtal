@@ -11,7 +11,7 @@ export interface DefineArgs<TMixinComposite = any>{
 export interface WCConfig<TMixinComposite = any>{
     tagName: string;
     initMethod?: keyof TMixinComposite;
-    initPropMerge?: Partial<TMixinComposite>;
+    propDef?: Partial<TMixinComposite>;
     actions?: Action<TMixinComposite>[];
 
 }
