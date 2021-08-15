@@ -7,7 +7,7 @@ export const TemplMgmtBaseMixin = (superclass) => class TemplMgmtBase extends su
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
-    //abstract loadPlugins(self: TemplMgmtBase): void;
+    loadPlugins(self) { }
     doInitTransform(self) {
         this.loadPlugins(self);
         transform(self.clonedTemplate, self.__ctx);

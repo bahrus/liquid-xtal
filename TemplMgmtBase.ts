@@ -19,7 +19,7 @@ export const TemplMgmtBaseMixin: any = (superclass: {new(): TemplMgmtBase2} )  =
         
     }
 
-    //abstract loadPlugins(self: TemplMgmtBase): void;
+    loadPlugins(self: TemplMgmtBase): void {}
 
     doInitTransform(self: TemplMgmtBase): void{
         this.loadPlugins(self);
