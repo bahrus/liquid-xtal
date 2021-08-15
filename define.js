@@ -1,5 +1,4 @@
 import { define as def } from 'xtal-element/lib/define.js';
-import { applyMixins } from 'xtal-element/lib/applyMixins.js';
 import { propUp } from 'xtal-element/lib/propUp.js';
 import { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 import { lispToCamel } from 'trans-render/lib/lispToCamel.js';
@@ -7,7 +6,14 @@ export { camelToLisp } from 'trans-render/lib/camelToLisp.js';
 export function define(args) {
     const c = args.config;
     const props = accProps(args);
-    class newClass extends HTMLElement {
+    let ext = HTMLElement;
+    const mixins2 = args.mixins;
+    if (mixins2 !== undefined) {
+        for (const mix of mixins2) {
+            ext = mix(ext);
+        }
+    }
+    class newClass extends ext {
         attributeChangedCallback(n, ov, nv) {
             const propName = lispToCamel(n);
             const prop = props[propName];
@@ -90,15 +96,20 @@ export function define(args) {
             delete this.propChangeQueue;
         }
     }
+    // constructor(){
+    //     super();
+    // }
     newClass.is = c.tagName;
     newClass.observedAttributes = getAttributeNames(props);
-    const mixins = args.mixins;
-    if (mixins !== undefined) {
-        applyMixins(newClass, mixins);
-    }
+    // const mixins = args.mixins || [];
+    // if(mixins !== undefined){
+    //     applyMixins(newClass, mixins);
+    // }
+    // class newNewClass extends mix(newClass).with(mixins){}
     addPropsToClass(newClass, props, args);
+    // def(newNewClass);
+    // return newNewClass;
     def(newClass);
-    return newClass;
 }
 function accProps(args) {
     const props = {};
@@ -250,3 +261,12 @@ const QR = (propName, self) => {
         self.propChangeQueue = new Set();
     self.propChangeQueue.add(propName);
 };
+const mix = (superclass) => new MixinBuilder(superclass);
+class MixinBuilder {
+    constructor(superclass) {
+        this.superclass = superclass;
+    }
+    with(mixins) {
+        return mixins.reduce((c, mixin) => mixin(c), this.superclass);
+    }
+}

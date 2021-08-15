@@ -11,7 +11,18 @@ export {Action, PropInfo} from './types.d.js';
 export function define<T = any>(args: DefineArgs<T>){
     const c = args.config;
     const props  = accProps(args);
-    class newClass extends  HTMLElement{
+    let ext = HTMLElement;
+    const mixins2 = args.mixins;
+    if(mixins2 !== undefined){
+        for(const mix of mixins2){
+            ext = mix(ext);
+        }
+    }
+    
+    class newClass extends ext{
+        // constructor(){
+        //     super();
+        // }
         static is = c.tagName;
         static observedAttributes = getAttributeNames(props);
         attributeChangedCallback(n: string, ov: string, nv: string){
@@ -97,13 +108,15 @@ export function define<T = any>(args: DefineArgs<T>){
         }
     }
     interface newClass extends HasPropChangeQueue{}
-    const mixins = args.mixins;
-    if(mixins !== undefined){
-        applyMixins(newClass, mixins);
-    }
+    // const mixins = args.mixins || [];
+    // if(mixins !== undefined){
+    //     applyMixins(newClass, mixins);
+    // }
+    // class newNewClass extends mix(newClass).with(mixins){}
     addPropsToClass(newClass, props, args);
+    // def(newNewClass);
+    // return newNewClass;
     def(newClass);
-    return newClass;
 }
 
 
@@ -265,6 +278,17 @@ const QR = (propName: string, self: HasPropChangeQueue) => {
     self.propChangeQueue.add(propName);
 }
 
+const mix = (superclass: any) => new MixinBuilder(superclass);
 
+class MixinBuilder {
+  superclass: any;
+  constructor(superclass: any) {
+    this.superclass = superclass;
+  }
+
+  with(mixins: any) { 
+    return mixins.reduce((c: any, mixin: any) => mixin(c), this.superclass);
+  }
+}
 
 

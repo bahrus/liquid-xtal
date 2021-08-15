@@ -1,4 +1,4 @@
-import { TemplMgmt, define, html } from '../TemplMgmtWithPEST.js';
+import { TemplMgmtMixin, define, html, doUpdateTransform, doInitTransform } from '../TemplMgmtWithPEST.js';
 const mainTemplate = html `
 <button part=down data-d=-1>-</button><span part=count></span><button part=up data-d=1>+</button>
 <style>
@@ -22,6 +22,12 @@ const mainTemplate = html `
     }
 </style>
 `;
+const CounterSoMixin = (superclass) => class extends superclass {
+    constructor() {
+        super(...arguments);
+        this.changeCount = (self, d, e) => self.count += d;
+    }
+};
 define({
     //config should be JSON serializable, importable via JSON import
     config: {
@@ -39,10 +45,10 @@ define({
             },
         },
         actions: [
-            ...TemplMgmt.doInitTransform,
+            ...doInitTransform,
             {
                 upon: ['count', 'updateTransform'],
-                ...TemplMgmt.doUpdateTransform
+                ...doUpdateTransform
             }
         ],
     },
@@ -50,7 +56,5 @@ define({
     initComplexPropMerge: {
         mainTemplate: mainTemplate
     },
-    mixins: [...TemplMgmt.Mixins, {
-            changeCount: (self, d, e) => self.count += d,
-        }],
+    mixins: [TemplMgmtMixin, CounterSoMixin],
 });

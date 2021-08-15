@@ -8,7 +8,7 @@ export { transform } from 'trans-render/lib/transform.js';
 
 
 
-export abstract class TemplMgmtBase extends HTMLElement{
+export const TemplMgmtBaseMixin: any = (superclass: any)  => class TemplMgmtBase extends superclass{
     __ctx: RenderContext | undefined;
     cloneTemplate(self: TemplMgmtBase){
         if(self.shadowRoot === null && !self.noshadow){
@@ -19,7 +19,7 @@ export abstract class TemplMgmtBase extends HTMLElement{
         
     }
 
-    abstract loadPlugins(self: TemplMgmtBase): void;
+    //abstract loadPlugins(self: TemplMgmtBase): void;
 
     doInitTransform(self: TemplMgmtBase): void{
         this.loadPlugins(self);
@@ -35,24 +35,26 @@ export abstract class TemplMgmtBase extends HTMLElement{
         transform(root, this.__ctx!);
     }
 
-    static doInitTransform : Action<TemplMgmtBase>[] = [
-        {
-            upon: ['mainTemplate', 'noshadow'],
-            do: 'cloneTemplate'
-        },
-        {
-            upon: ['clonedTemplate', 'initTransform'],
-            riff: ['clonedTemplate', 'initTransform'],
-            do: 'doInitTransform'
-        }
-    ];
 
-    static doUpdateTransform: Action<TemplMgmtBase> = {
-        
-        riff: ['updateTransform'],
-        do: 'doUpdateTransform',
-    };
 }
+
+export const  doInitTransform : Action<TemplMgmtBase>[] = [
+    {
+        upon: ['mainTemplate', 'noshadow'],
+        do: 'cloneTemplate'
+    },
+    {
+        upon: ['clonedTemplate', 'initTransform'],
+        riff: ['clonedTemplate', 'initTransform'],
+        do: 'doInitTransform'
+    }
+];
+
+export const doUpdateTransform: Action<TemplMgmtBase> = {
+    
+    riff: ['updateTransform'],
+    do: 'doUpdateTransform',
+};
 
 export interface TemplMgmtBase{
     mainTemplate: HTMLTemplateElement;

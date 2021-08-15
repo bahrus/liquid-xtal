@@ -1,12 +1,13 @@
 import { transform } from 'trans-render/lib/transform.js';
 export { transform } from 'trans-render/lib/transform.js';
-export class TemplMgmtBase extends HTMLElement {
+export const TemplMgmtBaseMixin = (superclass) => class TemplMgmtBase extends superclass {
     cloneTemplate(self) {
         if (self.shadowRoot === null && !self.noshadow) {
             self.attachShadow({ mode: 'open' });
         }
         self.clonedTemplate = self.mainTemplate.content.cloneNode(true);
     }
+    //abstract loadPlugins(self: TemplMgmtBase): void;
     doInitTransform(self) {
         this.loadPlugins(self);
         transform(self.clonedTemplate, self.__ctx);
@@ -19,8 +20,8 @@ export class TemplMgmtBase extends HTMLElement {
         const root = self.noshadow ? self : self.shadowRoot;
         transform(root, this.__ctx);
     }
-}
-TemplMgmtBase.doInitTransform = [
+};
+export const doInitTransform = [
     {
         upon: ['mainTemplate', 'noshadow'],
         do: 'cloneTemplate'
@@ -31,7 +32,7 @@ TemplMgmtBase.doInitTransform = [
         do: 'doInitTransform'
     }
 ];
-TemplMgmtBase.doUpdateTransform = {
+export const doUpdateTransform = {
     riff: ['updateTransform'],
     do: 'doUpdateTransform',
 };
